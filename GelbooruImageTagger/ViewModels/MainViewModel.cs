@@ -43,7 +43,7 @@ namespace GelbooruImageTagger.ViewModels
 
         #region Properties
 
-        private bool _isTagging = false;
+        private bool _isReady = true;
         private bool _isPreviewOpen = false;
         private bool _skipTaggedImages = false;
         private ObservableCollection<GelbooruImage> _gelbooruImages = new ObservableCollection<GelbooruImage>();
@@ -55,10 +55,10 @@ namespace GelbooruImageTagger.ViewModels
         private ObservableCollection<string> _selectedArtists = new ObservableCollection<string>();
         private ObservableCollection<string> _selectedTags = new ObservableCollection<string>();
 
-        public bool IsTagging
+        public bool IsReady
         {
-            get => _isTagging;
-            set => SetField(ref _isTagging, value);
+            get => _isReady;
+            set => SetField(ref _isReady, value);
         }
         public bool IsPreviewOpen
         {
@@ -129,21 +129,21 @@ namespace GelbooruImageTagger.ViewModels
         {
             get
             {
-                return _addCommand ?? (_addCommand = new RelayCommand(() => _ = OpenFileDialogAndAddItems(), () => !_isTagging));
+                return _addCommand ?? (_addCommand = new RelayCommand(() => _ = OpenFileDialogAndAddItems(), () => IsReady));
             }
         }
         public RelayCommand ClearCommand
         {
             get
             {
-                return _clearCommand ?? (_clearCommand = new RelayCommand(() => ClearItems(), () => GelbooruImages.Count > 0 && !_isTagging));
+                return _clearCommand ?? (_clearCommand = new RelayCommand(() => ClearItems(), () => GelbooruImages.Count > 0 && IsReady));
             }
         }
         public RelayCommand TagCommand
         {
             get
             {
-                return _tagCommand ?? (_tagCommand = new RelayCommand(() => _ = TagItems(), () => GelbooruImages.Count > 0 && !_isTagging));
+                return _tagCommand ?? (_tagCommand = new RelayCommand(() => _ = TagItems(), () => GelbooruImages.Count > 0 && IsReady));
             }
         }
 
@@ -182,6 +182,7 @@ namespace GelbooruImageTagger.ViewModels
 
             IReadOnlyList<StorageFile> files = await picker.PickMultipleFilesAsync();
 
+            IsReady = false;
             foreach (StorageFile file in files)
             {
                 string path = file.Path;
@@ -255,6 +256,7 @@ namespace GelbooruImageTagger.ViewModels
                 }
 
             }
+            IsReady = true;
 
             RefreshCommandCanExecutes();
             RefreshSelection();
@@ -268,7 +270,7 @@ namespace GelbooruImageTagger.ViewModels
 
         public async Task TagItems()
         {
-            IsTagging = true;
+            IsReady = false;
             RefreshCommandCanExecutes();
 
             ParallelOptions parallelOptions = new ParallelOptions()
@@ -340,7 +342,7 @@ namespace GelbooruImageTagger.ViewModels
                 }
             }
 
-            IsTagging = false;
+            IsReady = true;
             RefreshCommandCanExecutes();
         }
 
