@@ -91,8 +91,16 @@
                     </Core:DataTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
                 <ScrollViewer>
-                    <StackPanel Margin="16">
-                        
+                    <StackPanel x:Name="PreviewPanePanel" Margin="16" Tag="{Binding Path=SelectedGelbooruImages}">
+                        <Interactivity:Interaction.Behaviors>
+                            <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewPanePanel, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
+                                <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                            </Core:DataTriggerBehavior>
+                            <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewPanePanel, Path=Tag.Count}" Value="1" ComparisonCondition="GreaterThanOrEqual">
+                                <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                            </Core:DataTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+
                         <TextBlock x:Name="PreviewTitle" Tag="{Binding Path=SelectedGelbooruImages}" Text="{Binding Path=SelectedGelbooruImage.File.Name}" TextWrapping="Wrap" Style="{StaticResource BaseTextBlockStyle}" FontSize="16">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewTitle, Path=Tag.Count}" Value="1" ComparisonCondition="Equal">
