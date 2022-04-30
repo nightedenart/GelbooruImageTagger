@@ -13,7 +13,11 @@ Add the downloaded files to the list and click 'Tag' when ready.
 
 You can also go into the settings to skip images that have already been tagged.
 
-As this is a UWP app, you will need to install Visual Studio 2022 (recommended) and install "Universal Windows Platform development" tools to build and run. This app isn't currently on the Microsoft Store but is under consideration.
+As this is a UWP app, you will need to install or modify additional tools to build in the Visual Studio installer.
+
+Visual Studio is required (Visual Studio 2022 recommended) and under "Universal Windows Platform development" select the latest Windows SDK (Windows 11 SDK recommended).
+
+This app isn't currently on the Microsoft Store but is under consideration.
 
 ## Notes
 
