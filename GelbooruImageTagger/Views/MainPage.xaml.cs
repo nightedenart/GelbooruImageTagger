@@ -60,8 +60,8 @@ namespace GelbooruImageTagger.Views
             CaptionPanel.RenderTransform = new TranslateTransform();
             Storyboard captionStoryboard = new Storyboard();
             DoubleAnimation captionAnimation = new DoubleAnimation();
-            captionAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(167));
-            captionAnimation.EasingFunction = new QuinticEase() { EasingMode = EasingMode.EaseInOut };
+            captionAnimation.Duration = new Duration(TimeSpan.FromMilliseconds(333));
+            captionAnimation.EasingFunction = new QuinticEase() { EasingMode = EasingMode.EaseOut };
             Storyboard.SetTarget(captionAnimation, CaptionPanel);
             Storyboard.SetTargetProperty(captionAnimation, "(StackPanel.RenderTransform).(TranslateTransform.X)");
             captionStoryboard.Children.Add(captionAnimation);
