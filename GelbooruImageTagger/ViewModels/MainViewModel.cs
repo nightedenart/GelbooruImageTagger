@@ -166,6 +166,7 @@ namespace GelbooruImageTagger.ViewModels
 
         public void RefreshCommandCanExecutes()
         {
+            AddCommand.RaiseCanExecuteChanged();
             ClearCommand.RaiseCanExecuteChanged();
             TagCommand.RaiseCanExecuteChanged();
         }
