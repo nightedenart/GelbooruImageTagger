@@ -91,17 +91,18 @@
                     </Core:DataTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
                 <ScrollViewer>
-                    <StackPanel x:Name="PreviewPanePanel" Margin="16" Tag="{Binding Path=SelectedGelbooruImages}">
-                        <Interactivity:Interaction.Behaviors>
-                            <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewPanePanel, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
-                                <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                            </Core:DataTriggerBehavior>
-                            <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewPanePanel, Path=Tag.Count}" Value="1" ComparisonCondition="GreaterThanOrEqual">
-                                <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-                            </Core:DataTriggerBehavior>
-                        </Interactivity:Interaction.Behaviors>
+                    <Grid>
+                        <StackPanel x:Name="PreviewPanePanel" Margin="16" Tag="{Binding Path=SelectedGelbooruImages}">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewPanePanel, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
+                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                </Core:DataTriggerBehavior>
+                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewPanePanel, Path=Tag.Count}" Value="1" ComparisonCondition="GreaterThanOrEqual">
+                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                </Core:DataTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
 
-                        <TextBlock x:Name="PreviewTitle" Tag="{Binding Path=SelectedGelbooruImages}" Text="{Binding Path=SelectedGelbooruImage.File.Name}" TextWrapping="Wrap" Style="{StaticResource BaseTextBlockStyle}" FontSize="16">
+                            <TextBlock x:Name="PreviewTitle" Tag="{Binding Path=SelectedGelbooruImages}" Text="{Binding Path=SelectedGelbooruImage.File.Name}" TextWrapping="Wrap" Style="{StaticResource BaseTextBlockStyle}" FontSize="16">
                             <Interactivity:Interaction.Behaviors>
                                 <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewTitle, Path=Tag.Count}" Value="1" ComparisonCondition="Equal">
                                     <Core:ChangePropertyAction PropertyName="Text" Value="{Binding Path=SelectedGelbooruImage.File.Name}" />
@@ -111,147 +112,158 @@
                                     <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
                                 </Core:DataTriggerBehavior>
                             </Interactivity:Interaction.Behaviors>
+                            </TextBlock>
+
+                            <StackPanel x:Name="PreviewMultipleTitle" Tag="{Binding Path=SelectedGelbooruImages}" Orientation="Horizontal">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewMultipleTitle, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                    </Core:DataTriggerBehavior>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewMultipleTitle, Path=Tag.Count}" Value="1" ComparisonCondition="Equal">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                    </Core:DataTriggerBehavior>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewMultipleTitle, Path=Tag.Count}" Value="1" ComparisonCondition="GreaterThan">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                    </Core:DataTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+
+                                <TextBlock Text="{Binding Path=SelectedGelbooruImages.Count}" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
+                                <TextBlock Text=" items selected" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
+
+                            </StackPanel>
+
+                            <Border Margin="0,16">
+                                <ItemsControl ItemsSource="{Binding Path=SelectedGelbooruImages}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Grid/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <Grid>
+                                                    <Image MaxWidth="200" MaxHeight="200" Source="{Binding Path=Thumbnail}" Stretch="Uniform"/>
+                                                    <Border BorderThickness="1" BorderBrush="#33000000" CornerRadius="3"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+
+                            <StackPanel x:Name="PreviewArtistsView" Tag="{Binding Path=SelectedArtists}">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewArtistsView, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                    </Core:DataTriggerBehavior>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewArtistsView, Path=Tag.Count}" Value="0" ComparisonCondition="GreaterThan">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                    </Core:DataTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                                <TextBlock Text="Artists" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="SemiBold"/>
+                                <ItemsControl ItemsSource="{Binding Path=SelectedArtists}" Margin="0,4,0,0">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <controls:WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{StaticResource CardBorderStyle}" Padding="8,4">
+                                                <TextBlock Text="{Binding}" Style="{StaticResource CaptionTextBlockStyle}" Opacity=".83"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <StackPanel x:Name="PreviewCopyrightsView" Tag="{Binding Path=SelectedCopyrights}" Margin="0,16">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewCopyrightsView, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                    </Core:DataTriggerBehavior>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewCopyrightsView, Path=Tag.Count}" Value="0" ComparisonCondition="GreaterThan">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                    </Core:DataTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                                <TextBlock Text="Copyrights" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="SemiBold"/>
+                                <ItemsControl ItemsSource="{Binding Path=SelectedCopyrights}" Margin="0,4,0,0">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <controls:WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{StaticResource CardBorderStyle}" Padding="8,4">
+                                                <TextBlock Text="{Binding}" Style="{StaticResource CaptionTextBlockStyle}" Opacity=".83"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <StackPanel x:Name="CommonTagsView" Tag="{Binding Path=SelectedTags}">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=CommonTagsView, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                    </Core:DataTriggerBehavior>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=CommonTagsView, Path=Tag.Count}" Value="0" ComparisonCondition="GreaterThan">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                    </Core:DataTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                                <TextBlock Text="Tags" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="SemiBold"/>
+                                <ItemsControl ItemsSource="{Binding Path=SelectedTags}" Margin="0,4,0,0">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <controls:WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{StaticResource CardBorderStyle}" Padding="8,4">
+                                                <TextBlock Text="{Binding}" Style="{StaticResource CaptionTextBlockStyle}" Opacity=".83"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <StackPanel x:Name="SelectedSourceView" Tag="{Binding Path=SelectedGelbooruImages}" Margin="0,16">
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=SelectedSourceView, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                    </Core:DataTriggerBehavior>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=SelectedSourceView, Path=Tag.Count}" Value="1" ComparisonCondition="Equal">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                    </Core:DataTriggerBehavior>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=SelectedSourceView, Path=Tag.Count}" Value="1" ComparisonCondition="NotEqual">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                    </Core:DataTriggerBehavior>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=SelectedSourceView, Path=Tag[0].Source}" Value="" ComparisonCondition="Equal">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                    </Core:DataTriggerBehavior>
+                                    <Core:DataTriggerBehavior Binding="{Binding ElementName=SelectedSourceView, Path=Tag[0].Source}" Value="" ComparisonCondition="NotEqual">
+                                        <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                    </Core:DataTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                                <TextBlock Text="Source" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding Path=SelectedGelbooruImage.Source}" Style="{StaticResource CaptionTextBlockStyle}" Margin="0,2,0,0" Opacity=".83"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                        <TextBlock Text="Select an item to preview." Style="{StaticResource CaptionTextBlockStyle}" Opacity=".83" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Interactivity:Interaction.Behaviors>
+                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewPanePanel, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
+                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                                </Core:DataTriggerBehavior>
+                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewPanePanel, Path=Tag.Count}" Value="1" ComparisonCondition="GreaterThanOrEqual">
+                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                </Core:DataTriggerBehavior>
+                            </Interactivity:Interaction.Behaviors>
                         </TextBlock>
-
-                        <StackPanel x:Name="PreviewMultipleTitle" Tag="{Binding Path=SelectedGelbooruImages}" Orientation="Horizontal">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewMultipleTitle, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                                </Core:DataTriggerBehavior>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewMultipleTitle, Path=Tag.Count}" Value="1" ComparisonCondition="Equal">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                                </Core:DataTriggerBehavior>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewMultipleTitle, Path=Tag.Count}" Value="1" ComparisonCondition="GreaterThan">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-                                </Core:DataTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-
-                            <TextBlock Text="{Binding Path=SelectedGelbooruImages.Count}" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-                            <TextBlock Text=" items selected" Style="{StaticResource BaseTextBlockStyle}" FontSize="16"/>
-
-                        </StackPanel>
-                        
-                        <Border Margin="0,16">
-                            <ItemsControl ItemsSource="{Binding Path=SelectedGelbooruImages}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <Grid/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Grid>
-                                                <Image MaxWidth="200" MaxHeight="200" Source="{Binding Path=Thumbnail}" Stretch="Uniform"/>
-                                                <Border BorderThickness="1" BorderBrush="#33000000" CornerRadius="3"/>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </Border>
-
-                        <StackPanel x:Name="PreviewArtistsView" Tag="{Binding Path=SelectedArtists}">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewArtistsView, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                                </Core:DataTriggerBehavior>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewArtistsView, Path=Tag.Count}" Value="0" ComparisonCondition="GreaterThan">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-                                </Core:DataTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                            <TextBlock Text="Artists" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="SemiBold"/>
-                            <ItemsControl ItemsSource="{Binding Path=SelectedArtists}" Margin="0,4,0,0">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <controls:WrapPanel/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource CardBorderStyle}" Padding="8,4">
-                                            <TextBlock Text="{Binding}" Style="{StaticResource CaptionTextBlockStyle}" Opacity=".83"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-
-                        <StackPanel x:Name="PreviewCopyrightsView" Tag="{Binding Path=SelectedCopyrights}" Margin="0,16">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewCopyrightsView, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                                </Core:DataTriggerBehavior>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewCopyrightsView, Path=Tag.Count}" Value="0" ComparisonCondition="GreaterThan">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-                                </Core:DataTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                            <TextBlock Text="Copyrights" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="SemiBold"/>
-                            <ItemsControl ItemsSource="{Binding Path=SelectedCopyrights}" Margin="0,4,0,0">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <controls:WrapPanel/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource CardBorderStyle}" Padding="8,4">
-                                            <TextBlock Text="{Binding}" Style="{StaticResource CaptionTextBlockStyle}" Opacity=".83"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-
-                        <StackPanel x:Name="CommonTagsView" Tag="{Binding Path=SelectedTags}">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=CommonTagsView, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                                </Core:DataTriggerBehavior>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=CommonTagsView, Path=Tag.Count}" Value="0" ComparisonCondition="GreaterThan">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-                                </Core:DataTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                            <TextBlock Text="Tags" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="SemiBold"/>
-                            <ItemsControl ItemsSource="{Binding Path=SelectedTags}" Margin="0,4,0,0">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <controls:WrapPanel/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource CardBorderStyle}" Padding="8,4">
-                                            <TextBlock Text="{Binding}" Style="{StaticResource CaptionTextBlockStyle}" Opacity=".83"/>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-
-                        <StackPanel x:Name="SelectedSourceView" Tag="{Binding Path=SelectedGelbooruImages}" Margin="0,16">
-                            <Interactivity:Interaction.Behaviors>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=SelectedSourceView, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                                </Core:DataTriggerBehavior>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=SelectedSourceView, Path=Tag.Count}" Value="1" ComparisonCondition="Equal">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                                </Core:DataTriggerBehavior>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=SelectedSourceView, Path=Tag.Count}" Value="1" ComparisonCondition="NotEqual">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-                                </Core:DataTriggerBehavior>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=SelectedSourceView, Path=Tag[0].Source}" Value="" ComparisonCondition="Equal">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                                </Core:DataTriggerBehavior>
-                                <Core:DataTriggerBehavior Binding="{Binding ElementName=SelectedSourceView, Path=Tag[0].Source}" Value="" ComparisonCondition="NotEqual">
-                                    <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-                                </Core:DataTriggerBehavior>
-                            </Interactivity:Interaction.Behaviors>
-                            <TextBlock Text="Source" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="SemiBold"/>
-                            <TextBlock Text="{Binding Path=SelectedGelbooruImage.Source}" Style="{StaticResource CaptionTextBlockStyle}" Margin="0,2,0,0" Opacity=".83"/>
-                        </StackPanel>
-
-                    </StackPanel>
+                    </Grid>
                 </ScrollViewer>
             </Border>
         </Grid>
