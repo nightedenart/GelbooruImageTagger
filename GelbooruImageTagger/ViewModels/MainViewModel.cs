@@ -35,6 +35,7 @@ namespace GelbooruImageTagger.ViewModels
 
         #region Internal Fields
 
+        private bool _isLoading = true;
         private HttpClient _httpClient = new HttpClient();
         private string _baseUri = @"https://gelbooru.com";
 
@@ -67,7 +68,14 @@ namespace GelbooruImageTagger.ViewModels
         public bool SkipTaggedImages
         {
             get => _skipTaggedImages;
-            set => SetField(ref _skipTaggedImages, value);
+            set
+            {
+                SetField(ref _skipTaggedImages, value);
+                if (!_isLoading)
+                {
+                    SaveSetting("SkipTaggedImages", value);
+                }
+            }
         }
         public ObservableCollection<GelbooruImage> GelbooruImages
         {
@@ -537,7 +545,50 @@ namespace GelbooruImageTagger.ViewModels
 
         }
 
+        public void SaveSetting(string key, object value)
+        {
+            if (key == null)
+                return;
+
+            try
+            {
+                ApplicationDataContainer roamingSettings = ApplicationData.Current.RoamingSettings;
+                roamingSettings.Values[key] = value;
+            }
+            catch
+            {
+                Debug.WriteLine("Failed to save '{0}' with: {1}", key, value);
+            }
+        }
+
+        public object LoadSetting(string key)
+        {
+            try
+            {
+                ApplicationDataContainer roamingSettings = ApplicationData.Current.RoamingSettings;
+                return roamingSettings.Values[key];
+            }
+            catch
+            {
+                Debug.WriteLine("Failed to get '{0}'.", key);
+            }
+            return null;
+        }
+
         #endregion
+
+        public MainViewModel()
+        {
+            // block saving any settings while we are loading
+            _isLoading = true;
+
+            if (LoadSetting("SkipTaggedImages") is bool skipTaggedImages)
+            {
+                SkipTaggedImages = skipTaggedImages;
+            }
+
+            _isLoading = false;
+        }
 
     }
 }
