@@ -249,7 +249,9 @@
                                     </Core:DataTriggerBehavior>
                                 </Interactivity:Interaction.Behaviors>
                                 <TextBlock Text="Source" Style="{StaticResource CaptionTextBlockStyle}" FontWeight="SemiBold"/>
-                                <TextBlock Text="{Binding Path=SelectedGelbooruImage.Source}" Style="{StaticResource CaptionTextBlockStyle}" Margin="0,2,0,0" Opacity=".83"/>
+                                <HyperlinkButton x:Name="SourceLinkButton" Margin="-8,-2,-8,0" NavigateUri="{Binding Path=SelectedGelbooruImage.Source}" Padding="8,4">
+                                    <TextBlock Text="{Binding Path=SelectedGelbooruImage.Source}" FontSize="12" TextWrapping="Wrap"/>
+                                </HyperlinkButton>
                             </StackPanel>
 
                         </StackPanel>
