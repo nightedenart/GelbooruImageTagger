@@ -267,6 +267,7 @@ namespace GelbooruImageTagger.ViewModels
         {
             GelbooruImages.Clear();
             RefreshCommandCanExecutes();
+            RefreshSelection();
         }
 
         public async Task TagItems()
