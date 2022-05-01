@@ -69,7 +69,7 @@
                         </ListView.ItemTemplate>
                     </ListView>
                 </Border>
-                <Border Grid.Column="1" Margin="8,0,0,0" Width="256" Padding="16">
+                <Border Grid.Column="1" Margin="8,0,0,0" Width="256">
                     <Border.Style>
                         <Style TargetType="{x:Type Border}" BasedOn="{StaticResource CardBorderStyle}">
                             <Setter Property="BorderThickness" Value="1,1,0,0"/>
@@ -87,7 +87,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </ScrollViewer.Style>
-                            <VirtualizingStackPanel>
+                            <VirtualizingStackPanel Margin="16">
                                 <Grid TextBlock.FontSize="14" TextBlock.FontWeight="SemiBold">
                                     <TextBlock Text="{Binding Path=SelectedBooruImage.Path, Converter={StaticResource PathToFileNameConverter}}" TextWrapping="Wrap">
                                         <TextBlock.Style>
