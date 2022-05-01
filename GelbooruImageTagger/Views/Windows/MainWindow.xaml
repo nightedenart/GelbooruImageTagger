@@ -142,7 +142,7 @@
                                         </Style>
                                     </StackPanel.Style>
                                     <TextBlock Text="Artists" FontWeight="SemiBold"/>
-                                    <ItemsControl ItemsSource="{Binding Path=SelectedArtists}">
+                                    <ItemsControl ItemsSource="{Binding Path=SelectedArtists}" Margin="-1,2,0,0">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel/>
@@ -150,7 +150,9 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding}"/>
+                                                <Border Style="{StaticResource CardBorderStyle}" Padding="8,4">
+                                                    <TextBlock Text="{Binding}"/>
+                                                </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
@@ -167,7 +169,7 @@
                                         </Style>
                                     </StackPanel.Style>
                                     <TextBlock Text="Copyrights" FontWeight="SemiBold"/>
-                                    <ItemsControl ItemsSource="{Binding Path=SelectedCopyrights}">
+                                    <ItemsControl ItemsSource="{Binding Path=SelectedCopyrights}" Margin="-1,2,0,0">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel/>
@@ -175,7 +177,9 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding}"/>
+                                                <Border Style="{StaticResource CardBorderStyle}" Padding="8,4">
+                                                    <TextBlock Text="{Binding}"/>
+                                                </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
@@ -192,7 +196,7 @@
                                         </Style>
                                     </StackPanel.Style>
                                     <TextBlock Text="Tags" FontWeight="SemiBold"/>
-                                    <ItemsControl ItemsSource="{Binding Path=SelectedCommonTags}">
+                                    <ItemsControl ItemsSource="{Binding Path=SelectedCommonTags}" Margin="-1,2,0,0">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel/>
@@ -200,7 +204,9 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding}"/>
+                                                <Border Style="{StaticResource CardBorderStyle}" Padding="8,4">
+                                                    <TextBlock Text="{Binding}"/>
+                                                </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
