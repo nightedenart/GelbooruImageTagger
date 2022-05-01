@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace GelbooruImageTagger.Views.Controls
 {
@@ -47,7 +48,9 @@ namespace GelbooruImageTagger.Views.Controls
         #endregion
 
         #region Internal Fields
+
         private IntPtr _hwnd;
+
         #endregion
 
         #region Dependency Properties and Callbacks
@@ -85,6 +88,10 @@ namespace GelbooruImageTagger.Views.Controls
 
         #endregion
 
+        #region Helper Methods
+
+        #endregion
+
         #region Methods
 
         public void RefreshWindow()
@@ -117,13 +124,21 @@ namespace GelbooruImageTagger.Views.Controls
             }
 
             if (IsDarkMode)
+            {
                 darkModeValue = 1;
+            }
 
             _ = DwmSetWindowAttribute(_hwnd, DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkModeValue, Marshal.SizeOf(typeof(int)));
 
         }
 
         #endregion
+
+        static FluentWindow()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(FluentWindow),
+                new FrameworkPropertyMetadata(typeof(FluentWindow)));
+        }
 
     }
 }

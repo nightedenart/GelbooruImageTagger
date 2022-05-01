@@ -28,7 +28,9 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0">
-                    <ListView>
+                    <ListView
+                        Background="Transparent"
+                        BorderThickness="0">
 
                     </ListView>
                 </Border>
