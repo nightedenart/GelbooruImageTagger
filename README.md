@@ -1,9 +1,13 @@
 # GelbooruImageTagger
-Universal Windows Platform (UWP) app that paints metadata properties to images downloaded from Gelbooru.
+Windows Presentation Foundation (WPF) app that paints metadata properties to images downloaded from Gelbooru.
 
 Currently, this app paints metadata such as any artists, copyrights / intellectual properties, keywords / tags and image source.
 
 This makes images easier to search for a particular tag or author.
+
+## Install instructions
+
+You can either build the project from source using Visual Studio (Visual Studio 2022 recommended) or you can go to the 'Releases' and get the latest binary and run (easiest method).
 
 ## How to use
 
@@ -12,12 +16,6 @@ Typically, images downloaded from Gelbooru are in the form of an MD5 hash (e.g. 
 Add the downloaded files to the list and click 'Tag' when ready.
 
 You can also go into the settings to skip images that have already been tagged.
-
-As this is a UWP app, you will need to install or modify additional tools to build in the Visual Studio installer.
-
-Visual Studio is required (Visual Studio 2022 recommended) and under "Universal Windows Platform development" select the latest Windows SDK (Windows 11 SDK recommended).
-
-This app isn't currently on the Microsoft Store but is under consideration.
 
 ## Notes
 
