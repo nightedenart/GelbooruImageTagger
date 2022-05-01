@@ -39,7 +39,23 @@
                         ItemsSource="{Binding Path=BooruImages}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=Path}"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="48" Height="48" Margin="0,0,8,0">
+                                        
+                                    </Border>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToFileNameConverter}}" FontSize="14"/>
+                                        <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToDirectoryNameConverter}}" Opacity=".75"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                        
+                                    </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
