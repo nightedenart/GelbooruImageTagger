@@ -74,7 +74,9 @@ namespace GelbooruImageTagger.ViewModels
         #region Commands
 
         private RelayCommand? _addCommand;
+        private RelayCommand? _clearCommand;
         public ICommand AddCommand => _addCommand ??= new RelayCommand( o => OpenFileDialogAndAddItems(), o => IsReady );
+        public ICommand ClearCommand => _clearCommand ??= new RelayCommand(o => ClearItems(), o => IsReady && BooruImages.Count > 0);
 
         #endregion
 
@@ -184,7 +186,6 @@ namespace GelbooruImageTagger.ViewModels
                 }
             }
         }
-
         public void RefreshSelection(IEnumerable<GelbooruImage> selectedItems)
         {
             if (selectedItems == null)
@@ -213,6 +214,12 @@ namespace GelbooruImageTagger.ViewModels
                 AddRangeObservable(SelectedArtists, artists, replace: true);
                 AddRangeObservable(SelectedCopyrights, copyrights, replace: true);
             }
+        }
+        public void ClearItems()
+        {
+            BooruImages.Clear();
+            SelectedImage = null;
+            RefreshSelection(Array.Empty<GelbooruImage>());
         }
 
         #endregion
