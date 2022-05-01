@@ -17,14 +17,33 @@
         <DockPanel>
             <Grid DockPanel.Dock="Top" Margin="8">
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="Add" Command="{Binding Path=AddCommand}"/>
-                    <Button Content="Clear" Command="{Binding Path=ClearCommand}"/>
+                    <Button Command="{Binding Path=AddCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xecc8;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
+                            <TextBlock Text="Add" Margin="8,0,0,0"/>
+                        </StackPanel>    
+                    </Button>
+                    <Button Command="{Binding Path=ClearCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xecc9;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
+                            <TextBlock Text="Clear" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </Button>
                     <Separator/>
-                    <Button Content="Tag"/>
+                    <Button>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xe8ec;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
+                            <TextBlock Text="Tag" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <ToggleButton Content="Show Preview" ToolTip="Show Preview"/>
-                    <Button Content="Settings" ToolTip="Settings"/>
+                    <ToggleButton ToolTip="Show Preview">
+                        <TextBlock Text="&#xe7c5;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
+                    </ToggleButton>
+                    <Button ToolTip="Settings">
+                        <TextBlock Text="&#xe713;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
+                    </Button>
                 </StackPanel>
             </Grid>
             <Grid>
