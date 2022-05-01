@@ -26,7 +26,7 @@ namespace GelbooruImageTagger.ViewModels
 
         private bool _isReady = true;
         private ObservableCollection<GelbooruImage> _booruImages = new();
-        private GelbooruImage _selectedImage = null;
+        private GelbooruImage? _selectedImage;
         private ObservableCollection<GelbooruImage> _selectedBooruImages = new();
 
         public bool IsReady
@@ -39,7 +39,7 @@ namespace GelbooruImageTagger.ViewModels
             get => _booruImages;
             set => SetField(ref _booruImages, value);
         }
-        public GelbooruImage SelectedImage
+        public GelbooruImage? SelectedImage
         {
             get => _selectedImage;
             set => SetField(ref _selectedImage, value);
