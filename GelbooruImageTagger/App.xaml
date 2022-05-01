@@ -16,6 +16,8 @@
             <converters:PathToFileNameConverter x:Key="PathToFileNameConverter"/>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
+            <FontFamily x:Key="SegoeFluentIcons">pack://application:,,,/Fonts/#Segoe Fluent Icons</FontFamily>
+
             <Style x:Key="CardBorderStyle" TargetType="{x:Type Border}">
                 <Setter Property="Background" Value="#B3FFFFFF"/>
                 <Setter Property="BorderBrush" Value="#0F000000"/>
