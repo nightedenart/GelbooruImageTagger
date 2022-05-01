@@ -6,8 +6,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GelbooruImageTagger.Views.Windows"
         xmlns:controls="clr-namespace:GelbooruImageTagger.Views.Controls"
+        xmlns:viewmodels="clr-namespace:GelbooruImageTagger.ViewModels"
         mc:Ignorable="d"
         Title="GelbooruImageTagger" Height="607" Width="801">
+    <controls:FluentWindow.DataContext>
+        <viewmodels:MainViewModel/>
+    </controls:FluentWindow.DataContext>
     <Grid>
         <DockPanel>
             <Grid DockPanel.Dock="Top" Margin="8">
