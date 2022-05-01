@@ -38,7 +38,7 @@
                         BorderThickness="0"
                         Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}"
                         ItemsSource="{Binding Path=BooruImages}"
-                        SelectedItem="{Binding Path=SelectedImage, Mode=OneWayToSource}"
+                        SelectedItem="{Binding Path=SelectedBooruImage, Mode=OneWayToSource}"
                         SelectionChanged="ListView_SelectionChanged">
                         <ListView.ItemTemplate>
                             <DataTemplate>

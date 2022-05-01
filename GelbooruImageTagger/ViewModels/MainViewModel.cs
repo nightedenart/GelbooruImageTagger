@@ -27,7 +27,7 @@ namespace GelbooruImageTagger.ViewModels
 
         private bool _isReady = true;
         private ObservableCollection<GelbooruImage> _booruImages = new();
-        private GelbooruImage? _selectedImage;
+        private GelbooruImage? _selectedBooruImage;
         private ObservableCollection<GelbooruImage> _selectedBooruImages = new();
         private ObservableCollection<string> _selectedCommonTags = new();
         private ObservableCollection<string> _selectedArtists = new();
@@ -43,10 +43,10 @@ namespace GelbooruImageTagger.ViewModels
             get => _booruImages;
             set => SetField(ref _booruImages, value);
         }
-        public GelbooruImage? SelectedImage
+        public GelbooruImage? SelectedBooruImage
         {
-            get => _selectedImage;
-            set => SetField(ref _selectedImage, value);
+            get => _selectedBooruImage;
+            set => SetField(ref _selectedBooruImage, value);
         }
         public ObservableCollection<GelbooruImage> SelectedGelbooruImages
         {
@@ -218,7 +218,7 @@ namespace GelbooruImageTagger.ViewModels
         public void ClearItems()
         {
             BooruImages.Clear();
-            SelectedImage = null;
+            SelectedBooruImage = null;
             RefreshSelection(Array.Empty<GelbooruImage>());
         }
 
