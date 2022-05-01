@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GelbooruImageTagger.Views.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace GelbooruImageTagger.Views.Windows
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : FluentWindow
     {
         public MainWindow()
         {
