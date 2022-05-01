@@ -37,18 +37,11 @@
                         BorderThickness="0"
                         Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}"
                         ItemsSource="{Binding Path=BooruImages}">
-                        <ListView.View>
-                            <GridView AllowsColumnReorder="False">
-                                <GridViewColumn Header="Name">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=Path}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Status"/>
-                            </GridView>
-                        </ListView.View>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Path}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                 </Border>
                 <Border Grid.Column="1" Margin="8,0,0,0" Width="256">
