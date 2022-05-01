@@ -7,6 +7,37 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <DockPanel>
+            <Grid DockPanel.Dock="Top" Margin="8">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Add"/>
+                    <Button Content="Clear"/>
+                    <Separator/>
+                    <Button Content="Tag"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <ToggleButton Content="Show Preview" ToolTip="Show Preview"/>
+                    <Button Content="Settings" ToolTip="Settings"/>
+                </StackPanel>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0">
+                    <ListView>
+
+                    </ListView>
+                </Border>
+                <Border Grid.Column="1" Margin="8,0,0,0" Width="256">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <VirtualizingStackPanel>
+                            
+                        </VirtualizingStackPanel>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </DockPanel>
     </Grid>
 </Window>
