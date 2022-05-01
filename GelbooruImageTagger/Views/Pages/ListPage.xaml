@@ -50,37 +50,52 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Border Style="{StaticResource CardBorderStyle}">
-                <ListView ItemsSource="{Binding Path=GelbooruImages}" SelectionMode="Extended" SelectionChanged="ListView_SelectionChanged">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0, 8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Width="48" Height="48" Margin="0,0,16,0">
-                                    <Border CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Grid>
-                                            <Image MaxWidth="48" MaxHeight="48" Source="{Binding Path=Thumbnail}" Stretch="Uniform"/>
-                                            <Border BorderThickness="1" BorderBrush="#33000000" CornerRadius="3"/>
-                                        </Grid>
+            <Grid>
+                <Border Style="{StaticResource CardBorderStyle}">
+                    <ListView ItemsSource="{Binding Path=GelbooruImages}" SelectionMode="Extended" SelectionChanged="ListView_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0, 8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Width="48" Height="48" Margin="0,0,16,0">
+                                        <Border CornerRadius="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Grid>
+                                                <Image MaxWidth="48" MaxHeight="48" Source="{Binding Path=Thumbnail}" Stretch="Uniform"/>
+                                                <Border BorderThickness="1" BorderBrush="#33000000" CornerRadius="3"/>
+                                            </Grid>
+                                        </Border>
                                     </Border>
-                                </Border>
-                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Path=File.Name}"/>
-                                    <TextBlock Text="{Binding Path=Directory}" Style="{StaticResource CaptionTextBlockStyle}" Opacity=".5"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="8,0" Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Path=StatusMessage}" Style="{StaticResource CaptionTextBlockStyle}"/>
-                                    <controls1:StatusLevelControl Level="{Binding Path=StatusLevel}" Margin="8,0,0,0"/>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Border>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Path=File.Name}"/>
+                                        <TextBlock Text="{Binding Path=Directory}" Style="{StaticResource CaptionTextBlockStyle}" Opacity=".5"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="8,0" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=StatusMessage}" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                        <controls1:StatusLevelControl Level="{Binding Path=StatusLevel}" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+                <StackPanel x:Name="MainEmptyState" Tag="{Binding Path=GelbooruImages}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Interactivity:Interaction.Behaviors>
+                        <Core:DataTriggerBehavior Binding="{Binding ElementName=MainEmptyState, Path=Tag.Count}" Value="0" ComparisonCondition="Equal">
+                            <Core:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                        </Core:DataTriggerBehavior>
+                        <Core:DataTriggerBehavior Binding="{Binding ElementName=MainEmptyState, Path=Tag.Count}" Value="1" ComparisonCondition="GreaterThanOrEqual">
+                            <Core:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                        </Core:DataTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
+                    <Button Content="Add Files" Command="{Binding Path=AddCommand}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="e.g. 5f97439d98b85503c6419c2aa7521a01.jpg" Style="{StaticResource CaptionTextBlockStyle}" Margin="0,16,0,0" Opacity=".67"/>
+                    <TextBlock Text="Only JPGs are supported." Style="{StaticResource CaptionTextBlockStyle}" Margin="0,4,0,0" Opacity=".67" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
             <Border Style="{StaticResource CardBorderStyle}" Grid.Column="1" Width="256" Margin="4,0,0,0">
                 <Interactivity:Interaction.Behaviors>
                     <Core:DataTriggerBehavior Binding="{Binding ElementName=PreviewPaneToggleButton, Path=IsChecked}" Value="False" ComparisonCondition="Equal">
