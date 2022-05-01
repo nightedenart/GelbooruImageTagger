@@ -46,7 +46,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Width="48" Height="48" Margin="0,0,8,0">
-                                        
+                                        <Image Source="{Binding Path=Thumbnail}"/>
                                     </Border>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToFileNameConverter}}" FontSize="14"/>

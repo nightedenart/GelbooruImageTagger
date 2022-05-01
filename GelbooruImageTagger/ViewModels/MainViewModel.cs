@@ -1,9 +1,11 @@
-﻿using GelbooruImageTagger.Models;
+﻿using GelbooruImageTagger.Extensions;
+using GelbooruImageTagger.Models;
 using GelbooruImageTagger.Utilities;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -98,6 +100,20 @@ namespace GelbooruImageTagger.ViewModels
                             Path = path,
                             Id = id,
                         };
+
+                        Bitmap? thumbnail = null;
+                        try
+                        {
+                            thumbnail = WindowsThumbnailProvider.GetThumbnail(path, 256, 256, ThumbnailOptions.None);
+                        }
+                        finally
+                        {
+                            if (thumbnail != null)
+                            {
+                                image.Thumbnail = thumbnail.BitmapToImageSource();
+                                thumbnail.Dispose();
+                            }
+                        }
 
                         if (BooruImages.Any(image => image.Path == path))
                         {
