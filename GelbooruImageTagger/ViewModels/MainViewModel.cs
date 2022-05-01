@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,8 @@ namespace GelbooruImageTagger.ViewModels
 
         private bool _isReady = true;
         private ObservableCollection<GelbooruImage> _booruImages = new();
+        private GelbooruImage _selectedImage = null;
+        private ObservableCollection<GelbooruImage> _selectedBooruImages = new();
 
         public bool IsReady
         {
@@ -35,6 +38,16 @@ namespace GelbooruImageTagger.ViewModels
         {
             get => _booruImages;
             set => SetField(ref _booruImages, value);
+        }
+        public GelbooruImage SelectedImage
+        {
+            get => _selectedImage;
+            set => SetField(ref _selectedImage, value);
+        }
+        public ObservableCollection<GelbooruImage> SelectedGelbooruImages
+        {
+            get => _selectedBooruImages;
+            set => SetField(ref _selectedBooruImages, value);
         }
 
         #endregion
@@ -69,6 +82,18 @@ namespace GelbooruImageTagger.ViewModels
             }
 
             return null;
+        }
+
+        public static void AddRangeObservable<T>(ObservableCollection<T> collection, IEnumerable<T> items, bool replace = false)
+        {
+            if (collection == null || items == null)
+                return;
+
+            if (replace)
+                collection.Clear();
+
+            foreach(T item in items)
+                collection.Add(item);
         }
 
         #endregion
@@ -130,6 +155,19 @@ namespace GelbooruImageTagger.ViewModels
 
                     }
                 }
+            }
+        }
+
+        public void RefreshSelection(IEnumerable<GelbooruImage> selectedItems)
+        {
+            if (selectedItems == null)
+                return;
+
+            AddRangeObservable(SelectedGelbooruImages, selectedItems, replace: true);
+
+            if (SelectedGelbooruImages.Count > 0)
+            {
+
             }
         }
 

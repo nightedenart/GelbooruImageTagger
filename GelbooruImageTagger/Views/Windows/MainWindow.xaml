@@ -37,7 +37,9 @@
                         Background="Transparent"
                         BorderThickness="0"
                         Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}"
-                        ItemsSource="{Binding Path=BooruImages}">
+                        ItemsSource="{Binding Path=BooruImages}"
+                        SelectedItem="{Binding Path=SelectedImage, Mode=OneWayToSource}"
+                        SelectionChanged="ListView_SelectionChanged">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -62,11 +64,75 @@
                     </ListView>
                 </Border>
                 <Border Grid.Column="1" Margin="8,0,0,0" Width="256">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <VirtualizingStackPanel>
-                            
-                        </VirtualizingStackPanel>
-                    </ScrollViewer>
+                    <Grid>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ScrollViewer.Style>
+                                <Style TargetType="{x:Type ScrollViewer}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=SelectedGelbooruImages.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ScrollViewer.Style>
+                            <VirtualizingStackPanel>
+                                <Grid TextBlock.FontSize="14" TextBlock.FontWeight="SemiBold">
+                                    <TextBlock Text="{Binding Path=SelectedImage.Path, Converter={StaticResource PathToFileNameConverter}}" TextWrapping="Wrap">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=SelectedGelbooruImages.Count}" Value="1">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBlock>
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=SelectedGelbooruImages.Count}" Value="1">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    <Run Text="{Binding Path=SelectedGelbooruImages.Count, Mode=OneWay}"/>
+                                    <Run Text="items selected"/>
+                                    </TextBlock>
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding Path=SelectedGelbooruImages}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Grid/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Width="192" Height="192">
+                                                <Image Source="{Binding Path=Thumbnail}"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </VirtualizingStackPanel>
+                        </ScrollViewer>
+                        <TextBlock Text="Select an image to preview." HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=SelectedGelbooruImages.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
                 </Border>
             </Grid>
         </DockPanel>

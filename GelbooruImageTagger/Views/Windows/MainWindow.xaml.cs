@@ -1,4 +1,6 @@
-﻿using GelbooruImageTagger.Views.Controls;
+﻿using GelbooruImageTagger.Models;
+using GelbooruImageTagger.ViewModels;
+using GelbooruImageTagger.Views.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,14 @@ namespace GelbooruImageTagger.Views.Windows
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ListView listView && this.DataContext is MainViewModel vm)
+            {
+                vm.RefreshSelection(listView.SelectedItems.Cast<GelbooruImage>());
+            }
         }
     }
 }
