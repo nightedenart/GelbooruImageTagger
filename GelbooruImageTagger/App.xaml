@@ -4,6 +4,16 @@
              xmlns:local="clr-namespace:GelbooruImageTagger"
              StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:PathToDirectoryNameConverter x:Key="PathToDirectoryNameConverter"/>
+            <converters:PathToFileNameConverter x:Key="PathToFileNameConverter"/>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
