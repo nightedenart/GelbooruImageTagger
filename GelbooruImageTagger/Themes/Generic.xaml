@@ -3,6 +3,7 @@
                     xmlns:controls="clr-namespace:GelbooruImageTagger.Views.Controls">
 
     <Style TargetType="{x:Type controls:FluentWindow}">
+        <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Window}">
@@ -15,6 +16,7 @@
         <Style.Triggers>
             <Trigger Property="IsDarkMode" Value="True">
                 <Setter Property="Background" Value="#000000"/>
+                <Setter Property="Foreground" Value="White"/>
             </Trigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
