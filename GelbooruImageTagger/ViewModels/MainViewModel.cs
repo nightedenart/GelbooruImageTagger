@@ -2,6 +2,7 @@
 using GelbooruImageTagger.Models;
 using GelbooruImageTagger.Utilities;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Shell;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,6 +29,9 @@ namespace GelbooruImageTagger.ViewModels
         private ObservableCollection<GelbooruImage> _booruImages = new();
         private GelbooruImage? _selectedImage;
         private ObservableCollection<GelbooruImage> _selectedBooruImages = new();
+        private ObservableCollection<string> _selectedCommonTags = new();
+        private ObservableCollection<string> _selectedArtists = new();
+        private ObservableCollection<string> _selectedCopyrights = new();
 
         public bool IsReady
         {
@@ -48,6 +52,21 @@ namespace GelbooruImageTagger.ViewModels
         {
             get => _selectedBooruImages;
             set => SetField(ref _selectedBooruImages, value);
+        }
+        public ObservableCollection<string> SelectedCommonTags
+        {
+            get => _selectedCommonTags;
+            set => SetField(ref _selectedCommonTags, value);
+        }
+        public ObservableCollection<string> SelectedArtists
+        {
+            get => _selectedArtists;
+            set => SetField(ref _selectedArtists, value);
+        }
+        public ObservableCollection<string> SelectedCopyrights
+        {
+            get => _selectedCopyrights;
+            set => SetField(ref _selectedCopyrights, value);
         }
 
         #endregion
@@ -140,6 +159,14 @@ namespace GelbooruImageTagger.ViewModels
                             }
                         }
 
+                        using (ShellFile shellFile = ShellFile.FromFilePath(path))
+                        {
+                            AddRangeObservable(image.Tags, shellFile.Properties.System.Keywords.Value);
+                            AddRangeObservable(image.Artists, shellFile.Properties.System.Author.Value);
+
+                            AddRangeObservable(image.Copyrights, shellFile.Properties.System.Copyright.Value.Split(";", StringSplitOptions.TrimEntries).ToArray());
+                        }
+
                         if (BooruImages.Any(image => image.Path == path))
                         {
                             GelbooruImage? existingImage = BooruImages.Where(image => image.Path == path).FirstOrDefault();
@@ -167,7 +194,24 @@ namespace GelbooruImageTagger.ViewModels
 
             if (SelectedGelbooruImages.Count > 0)
             {
+                string[] artists = SelectedGelbooruImages.SelectMany(x=>x.Artists).Distinct().ToArray();
+                string[] copyrights = SelectedGelbooruImages.SelectMany(x => x.Copyrights).Distinct().ToArray();
 
+                List<string[]> tagListCollection = new();
+
+                foreach (GelbooruImage selectedImage in SelectedGelbooruImages)
+                    tagListCollection.Add(selectedImage.Tags.ToArray());
+
+                var commonTagsList = tagListCollection
+                    .Skip(1)
+                    .Aggregate(
+                        new HashSet<string>(tagListCollection.First()),
+                        (h, e) => { h.IntersectWith(e); return h; }
+                    );
+
+                AddRangeObservable(SelectedCommonTags, commonTagsList, replace: true);
+                AddRangeObservable(SelectedArtists, artists, replace: true);
+                AddRangeObservable(SelectedCopyrights, copyrights, replace: true);
             }
         }
 
