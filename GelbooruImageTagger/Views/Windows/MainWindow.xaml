@@ -55,7 +55,7 @@
                     <Border.Style>
                         <Style TargetType="{x:Type Border}" BasedOn="{StaticResource CardBorderStyle}">
                             <Setter Property="BorderThickness" Value="0,1,1,0"/>
-                            <Setter Property="CornerRadius" Value="0,0,4,0"/>
+                            <Setter Property="CornerRadius" Value="0,4,0,0"/>
                         </Style>
                     </Border.Style>
                     <ListView
