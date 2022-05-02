@@ -356,7 +356,7 @@
                                     </ItemsControl>
                                 </StackPanel>
 
-                                <StackPanel>
+                                <StackPanel Margin="0,0,0,8">
                                     <StackPanel.Style>
                                         <Style TargetType="{x:Type StackPanel}">
                                             <Style.Triggers>
@@ -381,6 +381,28 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
+                                </StackPanel>
+
+                                <StackPanel>
+                                    <StackPanel.Style>
+                                        <Style TargetType="{x:Type StackPanel}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=SelectedGelbooruImages.Count}" Value="1">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Path=SelectedBooruImage.SourceUri}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <TextBlock Text="Source" FontWeight="SemiBold"/>
+                                    <TextBlock TextWrapping="Wrap" Margin="0,2,0,0">
+                                        <Hyperlink NavigateUri="{Binding Path=SelectedBooruImage.SourceUri}">
+                                            <Run Text="{Binding Path=SelectedBooruImage.SourceUri}"/>
+                                        </Hyperlink>
+                                    </TextBlock>
                                 </StackPanel>
 
                                 <TextBlock Text="No tags were found. Select the 'Tag' command to populate tags." TextWrapping="Wrap" Opacity=".75">

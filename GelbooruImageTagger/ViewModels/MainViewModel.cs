@@ -103,6 +103,11 @@ namespace GelbooruImageTagger.ViewModels
 
         #region Helper Methods
 
+        public static bool IsURL(string url)
+        {
+            return Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute);
+        }
+
         public static bool IsMD5(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
@@ -213,6 +218,12 @@ namespace GelbooruImageTagger.ViewModels
                             {
                                 AddRangeObservable(image.Copyrights, shellFile.Properties.System.Copyright.Value.Split(";", StringSplitOptions.TrimEntries).ToArray());
                             }
+
+                            string? comment = shellFile.Properties.System.Comment.Value;
+                            if (!string.IsNullOrWhiteSpace(comment) && IsURL(comment)){
+                                image.SourceUri = comment;
+                            }
+
                         }
 
                         if (BooruImages.Any(image => image.Path == path))
@@ -336,10 +347,12 @@ namespace GelbooruImageTagger.ViewModels
                             string characterTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-character ')]/a";
                             string artistTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-artist ')]/a";
                             string copyrightTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-copyright ')]/a";
+                            string genericTagListNodeXPath = @".//*[@id='tag-list']/li";
 
                             List<string> mainTags = new();
                             string[]? artistTags = null;
                             string[]? copyrightTags = null;
+                            string sourceUri = "";
 
                             await Task.Run(() =>
                             {
@@ -376,6 +389,27 @@ namespace GelbooruImageTagger.ViewModels
                                         .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
                                         .ToArray();
 
+                                HtmlNodeCollection miscNodes = document.DocumentNode.SelectNodes(genericTagListNodeXPath);
+                                if (miscNodes != null)
+                                {
+                                    Parallel.ForEach(miscNodes, (miscNode, state) =>
+                                    {
+                                        if (miscNode.InnerText.StartsWith("Source: "))
+                                        {
+                                            HtmlNode anchorTag = miscNode.SelectSingleNode(@".//a");
+                                            if (anchorTag != null)
+                                            {
+                                                string href = anchorTag.Attributes["href"].Value;
+                                                if (!string.IsNullOrWhiteSpace(href))
+                                                {
+                                                    sourceUri = href;
+                                                }
+                                            }
+                                            state.Break();
+                                        }
+                                    });
+                                }
+
                             });
 
                             AddRangeObservable(gelbooruImage.Tags, mainTags, true);
@@ -386,10 +420,14 @@ namespace GelbooruImageTagger.ViewModels
                             if (copyrightTags != null)
                                 AddRangeObservable(gelbooruImage.Copyrights, copyrightTags, true);
 
+                            if (sourceUri != null)
+                                gelbooruImage.SourceUri = sourceUri;
+
                             using ShellFile shellFile = ShellFile.FromFilePath(gelbooruImage.Path);
                             shellFile.Properties.System.Keywords.Value = gelbooruImage.Tags.ToArray();
                             shellFile.Properties.System.Author.Value = gelbooruImage.Artists.ToArray();
                             shellFile.Properties.System.Copyright.Value = string.Join("; ", gelbooruImage.Copyrights.ToArray());
+                            shellFile.Properties.System.Comment.Value = sourceUri;
 
                             gelbooruImage.StatusLevel = GelbooruImageStatusLevel.Success;
                             gelbooruImage.StatusMessage = "Tagged";
