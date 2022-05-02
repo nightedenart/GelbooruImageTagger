@@ -41,6 +41,8 @@
                                 <Grid Margin="2">
                                     <Border x:Name="Bg" Background="{TemplateBinding Foreground}" CornerRadius="4" Opacity="0"/>
                                     <Border x:Name="AccentToggleBg" Background="{TemplateBinding Background}" CornerRadius="4" Opacity="0"/>
+                                    <Border x:Name="Highlight" CornerRadius="4" BorderThickness="1,1,1,0" BorderBrush="#16FFFFFF" Visibility="Collapsed"/>
+                                    <Border x:Name="Shadow" CornerRadius="4" BorderThickness="0,0,0,1" BorderBrush="#66000000" Visibility="Collapsed"/>
                                     <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                 </Grid>
                             </Border>
@@ -83,6 +85,8 @@
                                     </Trigger.ExitActions>
                                 </Trigger>
                                 <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                    <Setter TargetName="Highlight" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="Shadow" Property="Visibility" Value="Visible"/>
                                     <Trigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
@@ -103,6 +107,8 @@
                                         <Condition Property="ToggleButton.IsChecked" Value="True"/>
                                         <Condition Property="IsPressed" Value="True"/>
                                     </MultiTrigger.Conditions>
+                                    <Setter TargetName="Highlight" Property="Visibility" Value="Collapsed"/>
+                                    <Setter TargetName="Shadow" Property="Visibility" Value="Collapsed"/>
                                     <MultiTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
