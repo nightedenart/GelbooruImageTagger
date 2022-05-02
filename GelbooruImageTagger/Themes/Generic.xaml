@@ -16,18 +16,9 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsDarkMode" Value="True">
-                <Setter Property="Background" Value="#000000"/>
+                <Setter Property="Background" Value="#191919"/>
                 <Setter Property="Foreground" Value="White"/>
             </Trigger>
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsDarkMode" Value="True"/>
-                    <Condition Property="IsActive" Value="False"/>
-                </MultiTrigger.Conditions>
-                <MultiTrigger.Setters>
-                    <Setter Property="Background" Value="#2B2B2B"/>
-                </MultiTrigger.Setters>
-            </MultiTrigger>
         </Style.Triggers>
     </Style>
     
