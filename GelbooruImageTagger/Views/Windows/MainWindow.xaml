@@ -148,7 +148,18 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Border Width="48" Height="48" Margin="0,0,8,0">
-                                        <Image Source="{Binding Path=Thumbnail}"/>
+                                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Image Source="{Binding Path=Thumbnail}">
+                                                <Image.OpacityMask>
+                                                    <VisualBrush>
+                                                        <VisualBrush.Visual>
+                                                            <Border CornerRadius="4" Background="White" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"/>
+                                                        </VisualBrush.Visual>
+                                                    </VisualBrush>
+                                                </Image.OpacityMask>
+                                            </Image>
+                                            <Border CornerRadius="4" BorderThickness="1" BorderBrush="#11000000"/>
+                                        </Grid>
                                     </Border>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToFileNameConverter}}" FontSize="14"/>
@@ -223,7 +234,18 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border Width="192" Height="192">
-                                                <Image Source="{Binding Path=Thumbnail}"/>
+                                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <Image Source="{Binding Path=Thumbnail}">
+                                                        <Image.OpacityMask>
+                                                            <VisualBrush>
+                                                                <VisualBrush.Visual>
+                                                                    <Border CornerRadius="4" Background="White" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"/>
+                                                                </VisualBrush.Visual>
+                                                            </VisualBrush>
+                                                        </Image.OpacityMask>
+                                                    </Image>
+                                                    <Border CornerRadius="4" BorderThickness="1" BorderBrush="#11000000"/>
+                                                </Grid>
                                             </Border>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
