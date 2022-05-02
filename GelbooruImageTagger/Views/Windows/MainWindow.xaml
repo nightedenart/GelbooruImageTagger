@@ -30,7 +30,7 @@
                         </StackPanel>
                     </Button>
                     <Separator Style="{StaticResource AppBarSeparatorStyle}"/>
-                    <Button Style="{StaticResource AppBarButtonStyle}">
+                    <Button Command="{Binding Path=TagCommand}" Style="{StaticResource AppBarButtonStyle}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xe8ec;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
                             <TextBlock Text="Tag" Margin="8,0,0,0"/>

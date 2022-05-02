@@ -1,6 +1,7 @@
 ﻿using GelbooruImageTagger.Extensions;
 using GelbooruImageTagger.Models;
 using GelbooruImageTagger.Utilities;
+using HtmlAgilityPack;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Shell;
 using System;
@@ -10,9 +11,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Input;
 
 namespace GelbooruImageTagger.ViewModels
@@ -21,6 +24,9 @@ namespace GelbooruImageTagger.ViewModels
     {
 
         #region Internal Fields
+
+        private HttpClient _httpClient = new();
+
         #endregion
 
         #region Properties
@@ -81,8 +87,11 @@ namespace GelbooruImageTagger.ViewModels
 
         private RelayCommand? _addCommand;
         private RelayCommand? _clearCommand;
+        private RelayCommand? _tagCommand;
+
         public ICommand AddCommand => _addCommand ??= new RelayCommand( o => OpenFileDialogAndAddItems(), o => IsReady );
         public ICommand ClearCommand => _clearCommand ??= new RelayCommand(o => ClearItems(), o => IsReady && BooruImages.Count > 0);
+        public ICommand TagCommand => _tagCommand ??= new RelayCommand(o => TagItems(), o => IsReady && BooruImages.Count > 0);
 
         #endregion
 
@@ -251,6 +260,122 @@ namespace GelbooruImageTagger.ViewModels
             BooruImages.Clear();
             SelectedBooruImage = null;
             RefreshSelection(Array.Empty<GelbooruImage>());
+        }
+        public void TagItems()
+        {
+            IsReady = false;
+
+            GelbooruImage[] gelbooruImages = BooruImages.ToArray();
+            string baseUri = @"https://gelbooru.com";
+
+            Parallel.ForEach(gelbooruImages, async (gelbooruImage, state) =>
+            {
+                string? response = null;
+                if (gelbooruImage.Id != null)
+                {
+                    string uri = $"{baseUri}/index.php?page=post&s=view&id={gelbooruImage.Id}";
+                    response = await _httpClient.GetStringAsync(uri);
+                }
+                else if (gelbooruImage.Hash != null)
+                {
+                    string uri = $"{baseUri}/index.php?page=post&s=list&md5={gelbooruImage.Hash}";
+                    using HttpRequestMessage message = new(HttpMethod.Head, uri);
+                    using HttpResponseMessage? redirectResponse = await _httpClient.SendAsync(message);
+                    redirectResponse.EnsureSuccessStatusCode();
+
+                    if (redirectResponse != null &&
+                        redirectResponse.RequestMessage != null &&
+                        redirectResponse.RequestMessage.RequestUri != null)
+                    {
+                        Uri requestUri = redirectResponse.RequestMessage.RequestUri;
+                        string? id = HttpUtility.ParseQueryString(requestUri.Query).Get("id");
+
+                        if (id != null)
+                        {
+                            gelbooruImage.Id = int.Parse(id);
+                            string redirectUri = $"{baseUri}/index.php?page=post&s=view&id={gelbooruImage.Id}";
+                            response = await _httpClient.GetStringAsync(uri);
+                        }
+                        else
+                        {
+                            throw new Exception("Did not get redirected to a post ID");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Failed to get response from redirect");
+                    }
+                }
+                
+                if (response == null)
+                {
+                    // unsupported
+                }
+                else
+                {
+                    string generalTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-general ')]/a";
+                    string characterTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-character ')]/a";
+                    string artistTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-artist ')]/a";
+                    string copyrightTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-copyright ')]/a";
+
+                    List<string> mainTags = new();
+                    string[]? artistTags = null;
+                    string[]? copyrightTags = null;
+
+                    await Task.Run(() =>
+                    {
+                        HtmlDocument document = new();
+                        document.LoadHtml(response);
+
+                        HtmlNodeCollection generalTagNodes = document.DocumentNode.SelectNodes(generalTagXPath);
+                        if (generalTagNodes != null)
+                            mainTags.AddRange(generalTagNodes
+                                .Select(x => HttpUtility.HtmlDecode(x.InnerText))
+                                .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
+                                .ToArray());
+
+                        HtmlNodeCollection characterTagNodes = document.DocumentNode.SelectNodes(characterTagXPath);
+                        if (characterTagNodes != null)
+                            mainTags.AddRange(characterTagNodes
+                                .Select(x => HttpUtility.HtmlDecode(x.InnerText))
+                                .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
+                                .ToArray());
+
+                        mainTags = mainTags.OrderBy(x => x).ToList();
+
+                        HtmlNodeCollection artistTagNodes = document.DocumentNode.SelectNodes(artistTagXPath);
+                        if (artistTagNodes != null)
+                            artistTags = artistTagNodes
+                                .Select(x => HttpUtility.HtmlDecode(x.InnerText))
+                                .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
+                                .ToArray();
+
+                        HtmlNodeCollection copyrightTagNodes = document.DocumentNode.SelectNodes(copyrightTagXPath);
+                        if (copyrightTagNodes != null)
+                            copyrightTags = copyrightTagNodes
+                                .Select(x => HttpUtility.HtmlDecode(x.InnerText))
+                                .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
+                                .ToArray();
+
+                    });
+
+                    AddRangeObservable(gelbooruImage.Tags, mainTags, true);
+
+                    if (artistTags != null)
+                        AddRangeObservable(gelbooruImage.Artists, artistTags, true);
+
+                    if (copyrightTags != null)
+                        AddRangeObservable(gelbooruImage.Copyrights, copyrightTags, true);
+
+                    using ShellFile shellFile = ShellFile.FromFilePath(gelbooruImage.Path);
+                    shellFile.Properties.System.Keywords.Value = gelbooruImage.Tags.ToArray();
+                    shellFile.Properties.System.Author.Value = gelbooruImage.Artists.ToArray();
+                    shellFile.Properties.System.Copyright.Value = string.Join("; ", gelbooruImage.Copyrights.ToArray());
+                }
+
+            });
+
+            IsReady = true;
         }
 
         #endregion
