@@ -15,22 +15,22 @@
     </controls:FluentWindow.DataContext>
     <Grid>
         <DockPanel>
-            <Grid DockPanel.Dock="Top" Margin="8">
+            <Grid DockPanel.Dock="Top" Margin="6">
                 <StackPanel Orientation="Horizontal">
-                    <Button Command="{Binding Path=AddCommand}">
+                    <Button Command="{Binding Path=AddCommand}" Style="{StaticResource AppBarButtonStyle}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xecc8;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
                             <TextBlock Text="Add" Margin="8,0,0,0"/>
                         </StackPanel>    
                     </Button>
-                    <Button Command="{Binding Path=ClearCommand}">
+                    <Button Command="{Binding Path=ClearCommand}" Style="{StaticResource AppBarButtonStyle}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xecc9;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
                             <TextBlock Text="Clear" Margin="8,0,0,0"/>
                         </StackPanel>
                     </Button>
                     <Separator/>
-                    <Button>
+                    <Button Style="{StaticResource AppBarButtonStyle}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xe8ec;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
                             <TextBlock Text="Tag" Margin="8,0,0,0"/>
@@ -38,10 +38,10 @@
                     </Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <ToggleButton ToolTip="Show Preview">
+                    <ToggleButton ToolTip="Show Preview" Style="{StaticResource AppBarToggleButtonStyle}" IsChecked="True">
                         <TextBlock Text="&#xe7c5;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
                     </ToggleButton>
-                    <Button ToolTip="Settings">
+                    <Button ToolTip="Settings" Style="{StaticResource AppBarButtonStyle}">
                         <TextBlock Text="&#xe713;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
                     </Button>
                 </StackPanel>
