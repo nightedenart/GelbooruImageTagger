@@ -166,7 +166,11 @@ namespace GelbooruImageTagger.ViewModels
                             AddRangeObservable(image.Tags, shellFile.Properties.System.Keywords.Value);
                             AddRangeObservable(image.Artists, shellFile.Properties.System.Author.Value);
 
-                            AddRangeObservable(image.Copyrights, shellFile.Properties.System.Copyright.Value.Split(";", StringSplitOptions.TrimEntries).ToArray());
+                            string? copyright = shellFile.Properties.System.Copyright.Value;
+                            if (copyright != null)
+                            {
+                                AddRangeObservable(image.Copyrights, shellFile.Properties.System.Copyright.Value.Split(";", StringSplitOptions.TrimEntries).ToArray());
+                            }
                         }
 
                         if (BooruImages.Any(image => image.Path == path))
