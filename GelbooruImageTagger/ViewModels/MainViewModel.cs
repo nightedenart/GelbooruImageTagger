@@ -25,6 +25,7 @@ namespace GelbooruImageTagger.ViewModels
 
         #region Properties
 
+        private bool _showPreviewPane = true;
         private bool _isReady = true;
         private ObservableCollection<GelbooruImage> _booruImages = new();
         private GelbooruImage? _selectedBooruImage;
@@ -33,6 +34,11 @@ namespace GelbooruImageTagger.ViewModels
         private ObservableCollection<string> _selectedArtists = new();
         private ObservableCollection<string> _selectedCopyrights = new();
 
+        public bool ShowPreviewPane
+        {
+            get => _showPreviewPane;
+            set => SetField(ref _showPreviewPane, value);
+        }
         public bool IsReady
         {
             get => _isReady;

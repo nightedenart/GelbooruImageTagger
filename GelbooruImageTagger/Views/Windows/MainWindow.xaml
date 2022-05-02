@@ -38,7 +38,7 @@
                     </Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <ToggleButton ToolTip="Show Preview" Style="{StaticResource AppBarToggleButtonStyle}" IsChecked="True">
+                    <ToggleButton ToolTip="Show Preview" Style="{StaticResource AppBarToggleButtonStyle}" IsChecked="{Binding Path=ShowPreviewPane}">
                         <TextBlock Text="&#xe7c5;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
                     </ToggleButton>
                     <Button ToolTip="Settings" Style="{StaticResource AppBarButtonStyle}">
@@ -166,6 +166,11 @@
                         <Style TargetType="{x:Type Border}" BasedOn="{StaticResource CardBorderStyle}">
                             <Setter Property="BorderThickness" Value="1,1,0,0"/>
                             <Setter Property="CornerRadius" Value="4,4,0,0"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ShowPreviewPane}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </Border.Style>
                     <Grid>
