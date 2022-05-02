@@ -63,8 +63,80 @@
                         BorderThickness="0"
                         Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}"
                         ItemsSource="{Binding Path=BooruImages}"
+                        Margin="-1"
+                        Padding="2"
                         SelectedItem="{Binding Path=SelectedBooruImage, Mode=OneWayToSource}"
-                        SelectionChanged="ListView_SelectionChanged">
+                        SelectionChanged="ListView_SelectionChanged"
+                        VirtualizingPanel.ScrollUnit="Pixel">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="Padding" Value="8"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <Grid>
+                                                <Border x:Name="Bg" BorderThickness="0" Style="{StaticResource CardBorderStyle}" Opacity="0"/>
+                                                <Border x:Name="SelectIndicator" Width="3" CornerRadius="3" Margin="0,16" Background="#0067c0" HorizontalAlignment="Left" RenderTransformOrigin=".5,.5" Opacity="0">
+                                                    <Border.RenderTransform>
+                                                        <ScaleTransform ScaleY="0"/>
+                                                    </Border.RenderTransform>
+                                                </Border>
+                                                <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="Bg" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:.083"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard FillBehavior="Stop">
+                                                                <DoubleAnimation Storyboard.TargetName="Bg" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:.083"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="SelectIndicator" Property="Opacity" Value="1"/>
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="Bg" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:.083"/>
+                                                                <DoubleAnimation Storyboard.TargetName="SelectIndicator" Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleY)" From="0" To="1" Duration="0:0:.166">
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <ExponentialEase EasingMode="EaseOut"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard FillBehavior="Stop">
+                                                                <DoubleAnimation Storyboard.TargetName="Bg" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:.083"/>
+                                                                <DoubleAnimation Storyboard.TargetName="SelectIndicator" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:.166">
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <ExponentialEase EasingMode="EaseOut"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding Path=IsDarkMode, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}" Value="True">
+                                                    <Setter TargetName="SelectIndicator" Property="Background" Value="#4cc2ff"/>
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
