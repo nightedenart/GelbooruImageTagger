@@ -50,6 +50,7 @@ namespace GelbooruImageTagger.Views.Controls
         #region Internal Fields
 
         private IntPtr _hwnd;
+        private HwndSource? _hwndSource;
 
         #endregion
 
@@ -82,8 +83,29 @@ namespace GelbooruImageTagger.Views.Controls
         protected override void OnSourceInitialized(EventArgs e)
         {
             _hwnd = new WindowInteropHelper(this).Handle;
+            _hwndSource = HwndSource.FromHwnd(_hwnd);
+
+            _hwndSource.AddHook(WndProc);
+
             RefreshWindow();
             base.OnSourceInitialized(e);
+        }
+
+        #endregion
+
+        #region Window Procedure Function
+
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            switch (msg)
+            {
+                case 26: // WM_SETTINGCHANGE
+                    RefreshWindow();
+                    break;
+            }
+
+            handled = false;
+            return IntPtr.Zero;
         }
 
         #endregion
@@ -107,6 +129,9 @@ namespace GelbooruImageTagger.Views.Controls
                     IsDarkMode = true;
                     break;
                 case AppThemeColorMode.System:
+
+                    IsDarkMode = false;
+
                     try
                     {
                         using Microsoft.Win32.RegistryKey? key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software")?.OpenSubKey("Microsoft")?.OpenSubKey("Windows")?.OpenSubKey("CurrentVersion")?.OpenSubKey("Themes")?.OpenSubKey("Personalize");
