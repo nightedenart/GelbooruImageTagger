@@ -347,7 +347,7 @@
                                 
                             </VirtualizingStackPanel>
                         </ScrollViewer>
-                        <TextBlock Text="Select an image to preview." HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap">
+                        <TextBlock Text="Select an image to preview." HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Opacity=".75">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
