@@ -65,6 +65,7 @@
                         ItemsSource="{Binding Path=BooruImages}"
                         Margin="-1"
                         Padding="2"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                         SelectedItem="{Binding Path=SelectedBooruImage, Mode=OneWayToSource}"
                         SelectionChanged="ListView_SelectionChanged"
                         VirtualizingPanel.ScrollUnit="Pixel">
@@ -168,7 +169,7 @@
                         </Style>
                     </Border.Style>
                     <Grid>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                             <ScrollViewer.Style>
                                 <Style TargetType="{x:Type ScrollViewer}">
                                     <Style.Triggers>
