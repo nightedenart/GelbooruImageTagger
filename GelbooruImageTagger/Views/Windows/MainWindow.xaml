@@ -130,7 +130,7 @@
                                                     </Trigger.ExitActions>
                                                 </Trigger>
                                                 <DataTrigger Binding="{Binding Path=IsDarkMode, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}" Value="True">
-                                                    <Setter Property="Background" Value="#0CFFFFFF"/>
+                                                    <Setter TargetName="Bg" Property="Background" Value="#0CFFFFFF"/>
                                                     <Setter TargetName="SelectIndicator" Property="Background" Value="#4cc2ff"/>
                                                 </DataTrigger>
                                             </ControlTemplate.Triggers>
