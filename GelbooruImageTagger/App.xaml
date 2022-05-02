@@ -177,6 +177,33 @@
                 </Style.Triggers>
             </Style>
 
+            <Style x:Key="AppBarSeparatorStyle" TargetType="{x:Type Separator}">
+                <Setter Property="BorderBrush" Value="#0F000000"/>
+                <Setter Property="Margin" Value="2,0"/>
+                <Setter Property="Width" Value="1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Separator}">
+                            <Border Width="{TemplateBinding Width}" Background="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                                <Border.OpacityMask>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#00FFFFFF" Offset="0"/>
+                                        <GradientStop Color="White" Offset=".025"/>
+                                        <GradientStop Color="White" Offset=".975"/>
+                                        <GradientStop Color="#00FFFFFF" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.OpacityMask>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=IsDarkMode, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}" Value="True">
+                        <Setter Property="BorderBrush" Value="#15FFFFFF"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

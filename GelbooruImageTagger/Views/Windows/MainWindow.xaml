@@ -29,7 +29,7 @@
                             <TextBlock Text="Clear" Margin="8,0,0,0"/>
                         </StackPanel>
                     </Button>
-                    <Separator/>
+                    <Separator Style="{StaticResource AppBarSeparatorStyle}"/>
                     <Button Style="{StaticResource AppBarButtonStyle}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xe8ec;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
