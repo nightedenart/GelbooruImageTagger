@@ -169,7 +169,7 @@
                                         <Grid VerticalAlignment="Center" Margin="4,0" TextBlock.FontSize="16">
                                             <Grid.Style>
                                                 <Style TargetType="{x:Type Grid}">
-                                                    <Setter Property="TextBlock.Foreground" Value="#7F64748B"/>
+                                                    <Setter Property="TextBlock.Foreground" Value="#BB94A3B8"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Path=StatusLevel}" Value="1">
                                                             <Setter Property="TextBlock.Foreground" Value="#10B981"/>
