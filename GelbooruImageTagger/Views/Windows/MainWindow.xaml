@@ -72,7 +72,7 @@
                         <ListView.ItemContainerStyle>
                             <Style TargetType="{x:Type ListViewItem}">
                                 <Setter Property="Margin" Value="2"/>
-                                <Setter Property="Padding" Value="8"/>
+                                <Setter Property="Padding" Value="8,4"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -165,8 +165,59 @@
                                         <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToFileNameConverter}}" FontSize="14"/>
                                         <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToDirectoryNameConverter}}" Opacity=".75"/>
                                     </StackPanel>
-                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                        
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal" Margin="0,0,4,0">
+                                        <Grid VerticalAlignment="Center" Margin="4,0" TextBlock.FontSize="16">
+                                            <Grid.Style>
+                                                <Style TargetType="{x:Type Grid}">
+                                                    <Setter Property="TextBlock.Foreground" Value="#7F64748B"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=StatusLevel}" Value="1">
+                                                            <Setter Property="TextBlock.Foreground" Value="#10B981"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Path=StatusLevel}" Value="2">
+                                                            <Setter Property="TextBlock.Foreground" Value="#EAB308"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Path=StatusLevel}" Value="3">
+                                                            <Setter Property="TextBlock.Foreground" Value="#F43F5E"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Path=StatusLevel}" Value="4">
+                                                            <Setter Property="TextBlock.Foreground" Value="#10B981"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+                                            <TextBlock FontFamily="{StaticResource SegoeFluentIcons}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Text" Value="&#xf138;"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=StatusLevel}" Value="1">
+                                                                <Setter Property="Text" Value="&#xf137;"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock FontFamily="{StaticResource SegoeFluentIcons}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Text" Value="&#xf13e;"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Path=StatusLevel}" Value="1">
+                                                                <Setter Property="Foreground" Value="#1E293B"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Path=StatusLevel}" Value="2">
+                                                                <Setter Property="Text" Value="&#xf13c;"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Path=StatusLevel}" Value="3">
+                                                                <Setter Property="Text" Value="&#xf13d;"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
+                                        <TextBlock Text="{Binding Path=StatusMessage}"/>
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>

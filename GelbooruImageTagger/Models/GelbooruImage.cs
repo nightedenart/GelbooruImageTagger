@@ -9,8 +9,17 @@ using System.Windows.Media;
 
 namespace GelbooruImageTagger.Models
 {
+    public enum GelbooruImageStatusLevel
+    {
+        None,
+        Success,
+        Warning,
+        Error,
+        PartialSuccess
+    }
     public class GelbooruImage : BindableBase
     {
+
         private string? _path;
         private ImageSource? _thumbnail;
         private int? _id;
@@ -19,6 +28,8 @@ namespace GelbooruImageTagger.Models
         private ObservableCollection<string> _artists = new();
         private ObservableCollection<string> _copyrights = new();
         private string? _sourceUri;
+        private GelbooruImageStatusLevel _statusLevel;
+        private string? _statusMessage = "Ready";
 
         public string? Path
         {
@@ -59,6 +70,16 @@ namespace GelbooruImageTagger.Models
         {
             get => _sourceUri;
             set => SetField(ref _sourceUri, value);
+        }
+        public GelbooruImageStatusLevel StatusLevel
+        {
+            get => _statusLevel;
+            set => SetField(ref _statusLevel, value);
+        }
+        public string? StatusMessage
+        {
+            get => _statusMessage;
+            set => SetField(ref _statusMessage, value);
         }
     }
 }
