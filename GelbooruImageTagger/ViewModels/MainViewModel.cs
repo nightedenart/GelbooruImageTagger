@@ -96,6 +96,25 @@ namespace GelbooruImageTagger.ViewModels
             return Regex.IsMatch(input, "^[0-9a-fA-F]{32}$", RegexOptions.Compiled);
         }
 
+        public static string? GetGelbooruImageHashFromFileName(string fileName)
+        {
+            if (fileName.Length == 32 && IsMD5(fileName))
+                return fileName;
+
+            if (fileName.StartsWith("sample_"))
+            {
+                string[] splitPath = fileName.Split('_', StringSplitOptions.RemoveEmptyEntries);
+                if (splitPath.Length == 2 &&
+                    splitPath[1].Length == 32 &&
+                    IsMD5(splitPath[1]))
+                {
+                    return splitPath[1];
+                }
+            }
+
+            return null;
+        }
+
         public static int? GetGelbooruImageIDFromFileName(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
@@ -142,15 +161,17 @@ namespace GelbooruImageTagger.ViewModels
                 {
                     string displayName = Path.GetFileNameWithoutExtension(path);
 
-                    if (IsMD5(displayName) ||
+                    if (GetGelbooruImageHashFromFileName(displayName) != null ||
                         GetGelbooruImageIDFromFileName(displayName) != null)
                     {
+                        string? hash = GetGelbooruImageHashFromFileName(displayName);
                         int? id = GetGelbooruImageIDFromFileName(displayName);
 
                         GelbooruImage image = new()
                         {
                             Path = path,
                             Id = id,
+                            Hash = hash
                         };
 
                         Bitmap? thumbnail = null;

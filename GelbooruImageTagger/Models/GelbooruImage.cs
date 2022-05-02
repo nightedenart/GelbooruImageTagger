@@ -14,6 +14,7 @@ namespace GelbooruImageTagger.Models
         private string? _path;
         private ImageSource? _thumbnail;
         private int? _id;
+        private string? _hash;
         private ObservableCollection<string> _tags = new();
         private ObservableCollection<string> _artists = new();
         private ObservableCollection<string> _copyrights = new();
@@ -33,6 +34,11 @@ namespace GelbooruImageTagger.Models
         {
             get => _id;
             set => SetField(ref _id, value);
+        }
+        public string? Hash
+        {
+            get => _hash;
+            set => SetField(ref _hash, value);
         }
         public ObservableCollection<string> Tags
         {
