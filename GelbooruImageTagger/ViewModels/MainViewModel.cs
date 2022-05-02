@@ -33,6 +33,7 @@ namespace GelbooruImageTagger.ViewModels
 
         private bool _showPreviewPane = true;
         private bool _isReady = true;
+        private bool _skipTaggedImages = true;
         private ObservableCollection<GelbooruImage> _booruImages = new();
         private GelbooruImage? _selectedBooruImage;
         private ObservableCollection<GelbooruImage> _selectedBooruImages = new();
@@ -49,6 +50,11 @@ namespace GelbooruImageTagger.ViewModels
         {
             get => _isReady;
             set => SetField(ref _isReady, value);
+        }
+        public bool SkipTaggedImages
+        {
+            get => _skipTaggedImages;
+            set => SetField(ref _skipTaggedImages, value);
         }
         public ObservableCollection<GelbooruImage> BooruImages
         {
@@ -270,107 +276,114 @@ namespace GelbooruImageTagger.ViewModels
 
             Parallel.ForEach(gelbooruImages, async (gelbooruImage, state) =>
             {
-                string? response = null;
-                if (gelbooruImage.Id != null)
+                if (gelbooruImage.Tags.Count > 0 && SkipTaggedImages)
                 {
-                    string uri = $"{baseUri}/index.php?page=post&s=view&id={gelbooruImage.Id}";
-                    response = await _httpClient.GetStringAsync(uri);
-                }
-                else if (gelbooruImage.Hash != null)
-                {
-                    string uri = $"{baseUri}/index.php?page=post&s=list&md5={gelbooruImage.Hash}";
-                    using HttpRequestMessage message = new(HttpMethod.Head, uri);
-                    using HttpResponseMessage? redirectResponse = await _httpClient.SendAsync(message);
-                    redirectResponse.EnsureSuccessStatusCode();
-
-                    if (redirectResponse != null &&
-                        redirectResponse.RequestMessage != null &&
-                        redirectResponse.RequestMessage.RequestUri != null)
-                    {
-                        Uri requestUri = redirectResponse.RequestMessage.RequestUri;
-                        string? id = HttpUtility.ParseQueryString(requestUri.Query).Get("id");
-
-                        if (id != null)
-                        {
-                            gelbooruImage.Id = int.Parse(id);
-                            string redirectUri = $"{baseUri}/index.php?page=post&s=view&id={gelbooruImage.Id}";
-                            response = await _httpClient.GetStringAsync(uri);
-                        }
-                        else
-                        {
-                            throw new Exception("Did not get redirected to a post ID");
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Failed to get response from redirect");
-                    }
-                }
-                
-                if (response == null)
-                {
-                    // unsupported
+                    // skipped
                 }
                 else
                 {
-                    string generalTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-general ')]/a";
-                    string characterTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-character ')]/a";
-                    string artistTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-artist ')]/a";
-                    string copyrightTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-copyright ')]/a";
-
-                    List<string> mainTags = new();
-                    string[]? artistTags = null;
-                    string[]? copyrightTags = null;
-
-                    await Task.Run(() =>
+                    string? response = null;
+                    if (gelbooruImage.Id != null)
                     {
-                        HtmlDocument document = new();
-                        document.LoadHtml(response);
+                        string uri = $"{baseUri}/index.php?page=post&s=view&id={gelbooruImage.Id}";
+                        response = await _httpClient.GetStringAsync(uri);
+                    }
+                    else if (gelbooruImage.Hash != null)
+                    {
+                        string uri = $"{baseUri}/index.php?page=post&s=list&md5={gelbooruImage.Hash}";
+                        using HttpRequestMessage message = new(HttpMethod.Head, uri);
+                        using HttpResponseMessage? redirectResponse = await _httpClient.SendAsync(message);
+                        redirectResponse.EnsureSuccessStatusCode();
 
-                        HtmlNodeCollection generalTagNodes = document.DocumentNode.SelectNodes(generalTagXPath);
-                        if (generalTagNodes != null)
-                            mainTags.AddRange(generalTagNodes
-                                .Select(x => HttpUtility.HtmlDecode(x.InnerText))
-                                .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
-                                .ToArray());
+                        if (redirectResponse != null &&
+                            redirectResponse.RequestMessage != null &&
+                            redirectResponse.RequestMessage.RequestUri != null)
+                        {
+                            Uri requestUri = redirectResponse.RequestMessage.RequestUri;
+                            string? id = HttpUtility.ParseQueryString(requestUri.Query).Get("id");
 
-                        HtmlNodeCollection characterTagNodes = document.DocumentNode.SelectNodes(characterTagXPath);
-                        if (characterTagNodes != null)
-                            mainTags.AddRange(characterTagNodes
-                                .Select(x => HttpUtility.HtmlDecode(x.InnerText))
-                                .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
-                                .ToArray());
+                            if (id != null)
+                            {
+                                gelbooruImage.Id = int.Parse(id);
+                                string redirectUri = $"{baseUri}/index.php?page=post&s=view&id={gelbooruImage.Id}";
+                                response = await _httpClient.GetStringAsync(uri);
+                            }
+                            else
+                            {
+                                throw new Exception("Did not get redirected to a post ID");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Failed to get response from redirect");
+                        }
+                    }
 
-                        mainTags = mainTags.OrderBy(x => x).ToList();
+                    if (response == null)
+                    {
+                        // unsupported
+                    }
+                    else
+                    {
+                        string generalTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-general ')]/a";
+                        string characterTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-character ')]/a";
+                        string artistTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-artist ')]/a";
+                        string copyrightTagXPath = @".//*[@id='tag-list']//li[contains(concat(' ',normalize-space(@class),' '),' tag-type-copyright ')]/a";
 
-                        HtmlNodeCollection artistTagNodes = document.DocumentNode.SelectNodes(artistTagXPath);
-                        if (artistTagNodes != null)
-                            artistTags = artistTagNodes
-                                .Select(x => HttpUtility.HtmlDecode(x.InnerText))
-                                .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
-                                .ToArray();
+                        List<string> mainTags = new();
+                        string[]? artistTags = null;
+                        string[]? copyrightTags = null;
 
-                        HtmlNodeCollection copyrightTagNodes = document.DocumentNode.SelectNodes(copyrightTagXPath);
-                        if (copyrightTagNodes != null)
-                            copyrightTags = copyrightTagNodes
-                                .Select(x => HttpUtility.HtmlDecode(x.InnerText))
-                                .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
-                                .ToArray();
+                        await Task.Run(() =>
+                        {
+                            HtmlDocument document = new();
+                            document.LoadHtml(response);
 
-                    });
+                            HtmlNodeCollection generalTagNodes = document.DocumentNode.SelectNodes(generalTagXPath);
+                            if (generalTagNodes != null)
+                                mainTags.AddRange(generalTagNodes
+                                    .Select(x => HttpUtility.HtmlDecode(x.InnerText))
+                                    .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
+                                    .ToArray());
 
-                    AddRangeObservable(gelbooruImage.Tags, mainTags, true);
+                            HtmlNodeCollection characterTagNodes = document.DocumentNode.SelectNodes(characterTagXPath);
+                            if (characterTagNodes != null)
+                                mainTags.AddRange(characterTagNodes
+                                    .Select(x => HttpUtility.HtmlDecode(x.InnerText))
+                                    .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
+                                    .ToArray());
 
-                    if (artistTags != null)
-                        AddRangeObservable(gelbooruImage.Artists, artistTags, true);
+                            mainTags = mainTags.OrderBy(x => x).ToList();
 
-                    if (copyrightTags != null)
-                        AddRangeObservable(gelbooruImage.Copyrights, copyrightTags, true);
+                            HtmlNodeCollection artistTagNodes = document.DocumentNode.SelectNodes(artistTagXPath);
+                            if (artistTagNodes != null)
+                                artistTags = artistTagNodes
+                                    .Select(x => HttpUtility.HtmlDecode(x.InnerText))
+                                    .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
+                                    .ToArray();
 
-                    using ShellFile shellFile = ShellFile.FromFilePath(gelbooruImage.Path);
-                    shellFile.Properties.System.Keywords.Value = gelbooruImage.Tags.ToArray();
-                    shellFile.Properties.System.Author.Value = gelbooruImage.Artists.ToArray();
-                    shellFile.Properties.System.Copyright.Value = string.Join("; ", gelbooruImage.Copyrights.ToArray());
+                            HtmlNodeCollection copyrightTagNodes = document.DocumentNode.SelectNodes(copyrightTagXPath);
+                            if (copyrightTagNodes != null)
+                                copyrightTags = copyrightTagNodes
+                                    .Select(x => HttpUtility.HtmlDecode(x.InnerText))
+                                    .Where(x => !string.IsNullOrWhiteSpace(x) && x.IndexOfAny(Path.GetInvalidFileNameChars()) < 0)
+                                    .ToArray();
+
+                        });
+
+                        AddRangeObservable(gelbooruImage.Tags, mainTags, true);
+
+                        if (artistTags != null)
+                            AddRangeObservable(gelbooruImage.Artists, artistTags, true);
+
+                        if (copyrightTags != null)
+                            AddRangeObservable(gelbooruImage.Copyrights, copyrightTags, true);
+
+                        using ShellFile shellFile = ShellFile.FromFilePath(gelbooruImage.Path);
+                        shellFile.Properties.System.Keywords.Value = gelbooruImage.Tags.ToArray();
+                        shellFile.Properties.System.Author.Value = gelbooruImage.Artists.ToArray();
+                        shellFile.Properties.System.Copyright.Value = string.Join("; ", gelbooruImage.Copyrights.ToArray());
+                    }
                 }
 
             });
