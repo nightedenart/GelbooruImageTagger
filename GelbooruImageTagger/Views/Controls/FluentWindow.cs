@@ -113,7 +113,10 @@ namespace GelbooruImageTagger.Views.Controls
                         if (key != null)
                         {
                             string? keyValue = key.GetValue("AppsUseLightTheme")?.ToString();
+                            if (keyValue == "0")
+                            {
                                 IsDarkMode = true;
+                            }
                         }
                     }
                     catch

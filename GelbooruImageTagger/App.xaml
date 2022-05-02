@@ -135,7 +135,7 @@
                             <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
                             <Condition Binding="{Binding Path=IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
                         </MultiDataTrigger.Conditions>
-                        <Setter Property="Background" Value="#47b1e8"/>
+                        <Setter Property="Background" Value="#1975c5"/>
                     </MultiDataTrigger>
                     <MultiDataTrigger>
                         <MultiDataTrigger.Conditions>

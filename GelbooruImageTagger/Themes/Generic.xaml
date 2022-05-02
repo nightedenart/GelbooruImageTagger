@@ -3,6 +3,7 @@
                     xmlns:controls="clr-namespace:GelbooruImageTagger.Views.Controls">
 
     <Style TargetType="{x:Type controls:FluentWindow}">
+        <Setter Property="Background" Value="White"/>
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Template">
             <Setter.Value>
