@@ -51,7 +51,7 @@
                     <ToggleButton ToolTip="Show Preview" Style="{StaticResource AppBarToggleButtonStyle}" IsChecked="{Binding Path=ShowPreviewPane}">
                         <TextBlock Text="&#xe7c5;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
                     </ToggleButton>
-                    <Button ToolTip="Settings" Style="{StaticResource AppBarButtonStyle}">
+                    <Button ToolTip="Settings" Style="{StaticResource AppBarButtonStyle}" IsEnabled="False">
                         <TextBlock Text="&#xe713;" FontFamily="{StaticResource SegoeFluentIcons}" VerticalAlignment="Center" FontSize="16"/>
                     </Button>
                 </StackPanel>
