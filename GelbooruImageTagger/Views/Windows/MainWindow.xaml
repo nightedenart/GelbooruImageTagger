@@ -9,11 +9,21 @@
         xmlns:viewmodels="clr-namespace:GelbooruImageTagger.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
+        CaptionHeight="32"
         Title="GelbooruImageTagger" Height="607" Width="801">
     <controls:FluentWindow.DataContext>
         <viewmodels:MainViewModel/>
     </controls:FluentWindow.DataContext>
-    <Grid>
+    <DockPanel>
+        <Grid Height="32" DockPanel.Dock="Top">
+            <Button Style="{StaticResource AppBarButtonStyle}" HorizontalAlignment="Left" WindowChrome.IsHitTestVisibleInChrome="True" IsEnabled="False" Opacity="0">
+                <TextBlock Text="&#xe72b;" FontFamily="{StaticResource SegoeFluentIcons}"/>
+            </Button>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16, 0">
+                <Border Width="16" Height="16" CornerRadius="16" BorderThickness="1" BorderBrush="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Margin="0,0,16,0"/>
+                <TextBlock Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+            </StackPanel>
+        </Grid>
         <DockPanel>
             <Grid DockPanel.Dock="Top" Margin="6">
                 <StackPanel Orientation="Horizontal">
@@ -436,5 +446,5 @@
                 </Border>
             </Grid>
         </DockPanel>
-    </Grid>
+    </DockPanel>
 </controls:FluentWindow>
