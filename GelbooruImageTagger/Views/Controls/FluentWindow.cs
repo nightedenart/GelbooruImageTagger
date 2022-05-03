@@ -80,6 +80,8 @@ namespace GelbooruImageTagger.Views.Controls
         static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll")]
         static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        [DllImport("winbrand.dll", CharSet = CharSet.Unicode)]
+        static extern string BrandingFormatString(string format);
 
         #endregion
 
@@ -130,6 +132,13 @@ namespace GelbooruImageTagger.Views.Controls
         }
         public static readonly DependencyProperty IsDarkModeProperty =
             DependencyProperty.Register("IsDarkMode", typeof(bool), typeof(FluentWindow), new UIPropertyMetadata(false));
+        public bool IsMicaEnabled
+        {
+            get { return (bool)GetValue(IsMicaEnabledProperty); }
+            private set { SetValue(IsMicaEnabledProperty, value); }
+        }
+        public static readonly DependencyProperty IsMicaEnabledProperty =
+            DependencyProperty.Register("IsMicaEnabled", typeof(bool), typeof(FluentWindow), new UIPropertyMetadata(false));
         public int CaptionHeight
         {
             get { return (int)GetValue(CaptionHeightProperty); }
@@ -510,6 +519,10 @@ namespace GelbooruImageTagger.Views.Controls
         {
             return value / dpi;
         }
+        public static bool IsWindows11()
+        {
+            return BrandingFormatString("%WINDOWS_LONG%").Contains("Windows 11");
+        }
 
         #endregion
 
@@ -520,6 +533,7 @@ namespace GelbooruImageTagger.Views.Controls
             #region DWM
 
             int darkModeValue = 0;
+            int micaValue = 1;
 
             switch (AppThemeColor)
             {
@@ -560,12 +574,24 @@ namespace GelbooruImageTagger.Views.Controls
             MARGINS dwmMargins = new()
             {
                 leftWidth = 0,
-                topHeight = LogicalToDevicePixels(1, _dpiScale.DpiScaleY),
+                topHeight = IsWindows11() ? -1 : LogicalToDevicePixels(1, _dpiScale.DpiScaleY),
                 rightWidth = 0,
                 bottomHeight = 0
             };
 
             _ = DwmExtendFrameIntoClientArea(_hwnd, ref dwmMargins);
+
+            if (IsWindows11())
+            {
+                // returns 0 if succeeded
+                int micaAttr = DwmSetWindowAttribute(_hwnd, DwmWindowAttribute.DWMWA_MICA_EFFECT, ref micaValue, Marshal.SizeOf(typeof(int)));
+
+                if (micaValue == 1 &&
+                    micaAttr == 0)
+                    IsMicaEnabled = true;
+                else
+                    IsMicaEnabled = false;
+            }
 
             _ = DwmSetWindowAttribute(_hwnd, DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkModeValue, Marshal.SizeOf(typeof(int)));
 
