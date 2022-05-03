@@ -183,8 +183,8 @@
                                         </Grid>
                                     </Border>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToFileNameConverter}}" Style="{StaticResource StrongBodyStyle}"/>
-                                        <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToDirectoryNameConverter}}" Opacity=".75"/>
+                                        <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToFileNameConverter}}" Style="{StaticResource StrongBodyStyle}" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToDirectoryNameConverter}}" Opacity=".75" TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal" Margin="0,0,4,0">
                                         <Grid VerticalAlignment="Center" Margin="4,0" TextBlock.FontSize="16">
