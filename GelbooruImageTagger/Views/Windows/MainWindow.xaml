@@ -268,7 +268,7 @@
                                 </Style>
                             </ScrollViewer.Style>
                             <VirtualizingStackPanel Margin="16">
-                                <Grid TextBlock.FontSize="14" TextBlock.FontWeight="SemiBold">
+                                <Grid TextBlock.FontSize="16" TextBlock.FontWeight="SemiBold">
                                     <TextBlock Text="{Binding Path=SelectedBooruImage.Path, Converter={StaticResource PathToFileNameConverter}}" TextWrapping="Wrap">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
