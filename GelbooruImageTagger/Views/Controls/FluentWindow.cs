@@ -570,6 +570,7 @@ namespace GelbooruImageTagger.Views.Controls
             {
                 darkModeValue = 1;
             }
+            _ = DwmSetWindowAttribute(_hwnd, DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkModeValue, Marshal.SizeOf(typeof(int)));
 
             MARGINS dwmMargins = new()
             {
@@ -592,8 +593,6 @@ namespace GelbooruImageTagger.Views.Controls
                 else
                     IsMicaEnabled = false;
             }
-
-            _ = DwmSetWindowAttribute(_hwnd, DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkModeValue, Marshal.SizeOf(typeof(int)));
 
             #endregion
 
