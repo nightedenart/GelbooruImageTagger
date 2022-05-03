@@ -179,7 +179,13 @@ namespace GelbooruImageTagger.Views.Controls
                _hwndSource.CompositionTarget.TransformToDevice.M22
             );
 
+            _hwndSource.CompositionTarget.BackgroundColor = Colors.Transparent;
+
             _hwndSource.AddHook(WndProc);
+
+            int GWL_STYLE = -16;
+            int WS_SYSMENU = 0x80000;
+            _ = SetWindowLong(_hwnd, GWL_STYLE, GetWindowLong(_hwnd, GWL_STYLE) & ~WS_SYSMENU);
 
             RefreshWindow();
             base.OnSourceInitialized(e);
@@ -551,6 +557,16 @@ namespace GelbooruImageTagger.Views.Controls
                 darkModeValue = 1;
             }
 
+            MARGINS dwmMargins = new()
+            {
+                leftWidth = 0,
+                topHeight = LogicalToDevicePixels(1, _dpiScale.DpiScaleY),
+                rightWidth = 0,
+                bottomHeight = 0
+            };
+
+            _ = DwmExtendFrameIntoClientArea(_hwnd, ref dwmMargins);
+
             _ = DwmSetWindowAttribute(_hwnd, DwmWindowAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkModeValue, Marshal.SizeOf(typeof(int)));
 
             #endregion
@@ -586,7 +602,7 @@ namespace GelbooruImageTagger.Views.Controls
             switch (wParam)
             {
                 case 0: // normal or restored
-                    _windowBorderTemplate.Margin = new Thickness(0);
+                    _windowBorderTemplate.Margin = new Thickness(0, 1, 0, 0);
                     break;
                 case 2: // maximized
                     _windowBorderTemplate.Margin = new Thickness(0, DeviceToLogicalPixels(_nativeWindowBorderThickness, _dpiScale.DpiScaleY), 0, 0);
