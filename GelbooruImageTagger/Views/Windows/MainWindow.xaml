@@ -10,6 +10,7 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
         CaptionHeight="32"
+        FontFamily="Segoe UI Variable Text Regular, Segoe UI"
         Title="GelbooruImageTagger" Height="607" Width="801">
     <controls:FluentWindow.DataContext>
         <viewmodels:MainViewModel/>
@@ -182,7 +183,7 @@
                                         </Grid>
                                     </Border>
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToFileNameConverter}}" FontSize="14"/>
+                                        <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToFileNameConverter}}" Style="{StaticResource StrongBodyStyle}"/>
                                         <TextBlock Text="{Binding Path=Path, Converter={StaticResource PathToDirectoryNameConverter}}" Opacity=".75"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal" Margin="0,0,4,0">
@@ -271,7 +272,8 @@
                                 <Grid TextBlock.FontSize="16" TextBlock.FontWeight="SemiBold">
                                     <TextBlock Text="{Binding Path=SelectedBooruImage.Path, Converter={StaticResource PathToFileNameConverter}}" TextWrapping="Wrap">
                                         <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
+                                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource StrongBodyStyle}">
+                                                <Setter Property="FontFamily" Value="Segoe UI Variable Display Semibold, Segoe UI"/>
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Path=SelectedGelbooruImages.Count}" Value="1">
@@ -283,7 +285,8 @@
                                     </TextBlock>
                                     <TextBlock>
                                         <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
+                                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource StrongBodyStyle}">
+                                                <Setter Property="FontFamily" Value="Segoe UI Variable Display Semibold, Segoe UI"/>
                                                 <Setter Property="Visibility" Value="Visible"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Path=SelectedGelbooruImages.Count}" Value="1">
@@ -332,7 +335,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <TextBlock Text="Artists" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Artists" Style="{StaticResource StrongBodyStyle}"/>
                                     <ItemsControl ItemsSource="{Binding Path=SelectedArtists}" Margin="-1,2,0,0">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -359,7 +362,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <TextBlock Text="Copyrights" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Copyrights" Style="{StaticResource StrongBodyStyle}"/>
                                     <ItemsControl ItemsSource="{Binding Path=SelectedCopyrights}" Margin="-1,2,0,0">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -386,7 +389,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <TextBlock Text="Tags" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Tags" Style="{StaticResource StrongBodyStyle}"/>
                                     <ItemsControl ItemsSource="{Binding Path=SelectedCommonTags}" Margin="-1,2,0,0">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -417,7 +420,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <TextBlock Text="Source" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Source" Style="{StaticResource StrongBodyStyle}"/>
                                     <TextBlock TextWrapping="Wrap" Margin="0,2,0,0">
                                         <Hyperlink NavigateUri="{Binding Path=SelectedBooruImage.SourceUri, Mode=OneWay}" RequestNavigate="Hyperlink_RequestNavigate">
                                             <Run Text="{Binding Path=SelectedBooruImage.SourceUri}"/>
