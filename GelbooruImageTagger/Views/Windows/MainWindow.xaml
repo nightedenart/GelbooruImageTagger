@@ -409,7 +409,7 @@
                                     </StackPanel.Style>
                                     <TextBlock Text="Source" FontWeight="SemiBold"/>
                                     <TextBlock TextWrapping="Wrap" Margin="0,2,0,0">
-                                        <Hyperlink NavigateUri="{Binding Path=SelectedBooruImage.SourceUri}">
+                                        <Hyperlink NavigateUri="{Binding Path=SelectedBooruImage.SourceUri, Mode=OneWay}" RequestNavigate="Hyperlink_RequestNavigate">
                                             <Run Text="{Binding Path=SelectedBooruImage.SourceUri}"/>
                                         </Hyperlink>
                                     </TextBlock>
