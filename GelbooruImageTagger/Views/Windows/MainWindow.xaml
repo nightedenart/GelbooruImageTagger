@@ -21,7 +21,17 @@
             </Button>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16, 0">
                 <Image Source="../../Resources/App.ico" Width="16" Height="16" Margin="0,0,16,0"/>
-                <TextBlock Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                <TextBlock Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False">
+                                    <Setter Property="Opacity" Value=".5"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </StackPanel>
         </Grid>
         <DockPanel>

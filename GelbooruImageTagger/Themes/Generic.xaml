@@ -111,6 +111,16 @@
                                             <DataTrigger Binding="{Binding Path=ResizeMode, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="NoResize">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False">
+                                                <Setter Property="Opacity" Value=".5"/>
+                                            </DataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Path=CaptionButtonMouseOver, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}" Value="1"/>
+                                                    <Condition Binding="{Binding Path=IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Opacity" Value="1"/>
+                                            </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Button.Style>
@@ -190,6 +200,16 @@
                                             <DataTrigger Binding="{Binding Path=ResizeMode, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="CanMinimize">
                                                 <Setter Property="IsEnabled" Value="False"/>
                                             </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False">
+                                                <Setter Property="Opacity" Value=".5"/>
+                                            </DataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Path=CaptionButtonMouseOver, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}" Value="2"/>
+                                                    <Condition Binding="{Binding Path=IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Opacity" Value="1"/>
+                                            </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Button.Style>
@@ -253,6 +273,16 @@
                                             <DataTrigger Binding="{Binding Path=CaptionButtonPressed, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}" Value="3">
                                                 <Setter Property="Background" Value="#E2c42b1c"/>
                                             </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False">
+                                                <Setter Property="Opacity" Value=".5"/>
+                                            </DataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Path=CaptionButtonMouseOver, RelativeSource={RelativeSource AncestorType={x:Type controls:FluentWindow}}}" Value="3"/>
+                                                    <Condition Binding="{Binding Path=IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Opacity" Value="1"/>
+                                            </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Button.Style>
