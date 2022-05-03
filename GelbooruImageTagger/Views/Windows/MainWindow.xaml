@@ -20,7 +20,7 @@
                 <TextBlock Text="&#xe72b;" FontFamily="{StaticResource SegoeFluentIcons}"/>
             </Button>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16, 0">
-                <Border Width="16" Height="16" CornerRadius="16" BorderThickness="1" BorderBrush="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Margin="0,0,16,0"/>
+                <Image Source="../../Resources/App.ico" Width="16" Height="16" Margin="0,0,16,0"/>
                 <TextBlock Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
             </StackPanel>
         </Grid>
